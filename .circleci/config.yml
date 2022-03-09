@@ -13,7 +13,7 @@ jobs:
       - checkout:
           path: /projects/nemu/cpp/mustache-templating-engine
       - run:
-          name: Build Core
+          name: Build
           command: cd /projects/nemu/cpp/mustache-templating-engine/build/gnumake && make
 workflows:
   version: 2
