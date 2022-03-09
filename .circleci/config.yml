@@ -1,0 +1,29 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: ishiko/gcc-ishiko-cpp:0.10.0
+    steps:
+      - run: 
+          name: "Set NEMU_CPP environment variable and create workspace directory"
+          command: mkdir -p /projects/nemu/cpp && echo 'export NEMU_CPP="/projects/nemu/cpp"' >> $BASH_ENV
+      - checkout:
+          path: /projects/nemu/cpp/mustache-templating-engine
+      - run:
+          name: Build Core
+          command: cd /projects/nemu/cpp/mustache-templating-engine/build/gnumake && make
+workflows:
+  version: 2
+  continuous_build:
+    jobs:
+      - build
+  weekly_build:
+    jobs:
+      - build
+    triggers:
+      - schedule:
+          cron: "0 8 * * 0"
+          filters:
+            branches:
+              only:
+                 - main
