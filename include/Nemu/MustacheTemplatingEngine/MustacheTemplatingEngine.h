@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2019 Xavier Leclercq
+    Copyright (c) 2019-2022 Xavier Leclercq
 
     Permission is hereby granted, free of charge, to any person obtaining a
     copy of this software and associated documentation files (the "Software"),
@@ -23,8 +23,8 @@
 #ifndef _NEMUFRAMEWORK_NEMU_MUSTACHE_MUSTACHETEMPLATINGENGINE_H_
 #define _NEMUFRAMEWORK_NEMU_MUSTACHE_MUSTACHETEMPLATINGENGINE_H_
 
-#include "NemuFramework/Nemu/Core/TemplatingEngine.h"
 #include <boost/filesystem/path.hpp>
+#include <Nemu/Core.hpp>
 
 namespace Nemu
 {

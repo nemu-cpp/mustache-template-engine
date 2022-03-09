@@ -15,17 +15,17 @@ library NemuMustacheTemplatingEngine : NemuCore, mstch
 {
     archs = x86 x86_64;
    
-    includedirs += ../../../include/Nemu/MustacheTemplatingEngine;
+    includedirs += ../../include/Nemu/MustacheTemplatingEngine;
 
     if ($(toolset) == gnu)
     {
         cxx-compiler-options = "-std=c++11";
-        outputdir = ../../../lib;
+        outputdir = ../../lib;
     }
 
     if ($(toolset) != gnu)
     {
-        outputdir = ../../../lib/$(arch);
+        outputdir = ../../lib/$(arch);
     }
 
     if ($(config) == Debug)
@@ -35,8 +35,8 @@ library NemuMustacheTemplatingEngine : NemuCore, mstch
 
     headers
     {
-        ../../../include/Nemu/MustacheTemplatingEngine/MustacheTemplatingEngine.h
-        ../../../include/Nemu/MustacheTemplatingEngine/linkoptions.h
+        ../../include/Nemu/MustacheTemplatingEngine/MustacheTemplatingEngine.h
+        ../../include/Nemu/MustacheTemplatingEngine/linkoptions.h
     }
 
     sources

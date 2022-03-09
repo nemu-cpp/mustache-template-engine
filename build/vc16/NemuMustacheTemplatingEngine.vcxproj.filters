@@ -17,10 +17,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\include\Nemu\MustacheTemplatingEngine\MustacheTemplatingEngine.h">
+    <ClInclude Include="..\..\include\Nemu\MustacheTemplatingEngine\MustacheTemplatingEngine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\Nemu\MustacheTemplatingEngine\linkoptions.h">
+    <ClInclude Include="..\..\include\Nemu\MustacheTemplatingEngine\linkoptions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
