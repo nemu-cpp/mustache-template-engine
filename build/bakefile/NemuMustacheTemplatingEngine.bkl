@@ -1,0 +1,46 @@
+ishikopath = envvar("ISHIKO_CPP");
+import $(ishikopath)/third-party-glue/include/Ishiko/ThirdParty/mstch.bkl;
+nemupath = envvar("NEMU_CPP");
+import $(nemupath)/core/include/Nemu/Core.bkl;
+
+toolsets = gnu vs2019 vs2017 vs2015 vs2013;
+
+gnu.makefile = ../gnumake/GNUmakefile;
+vs2019.solutionfile = ../vc16/NemuMustacheTemplatingEngine.sln;
+vs2017.solutionfile = ../vc15/NemuMustacheTemplatingEngine.sln;
+vs2015.solutionfile = ../vc14/NemuMustacheTemplatingEngine.sln;
+vs2013.solutionfile = ../vc12/NemuMustacheTemplatingEngine.sln;
+
+library NemuMustacheTemplatingEngine : NemuCore, mstch
+{
+    archs = x86 x86_64;
+   
+    includedirs += ../../../include/Nemu/MustacheTemplatingEngine;
+
+    if ($(toolset) == gnu)
+    {
+        cxx-compiler-options = "-std=c++11";
+        outputdir = ../../../lib;
+    }
+
+    if ($(toolset) != gnu)
+    {
+        outputdir = ../../../lib/$(arch);
+    }
+
+    if ($(config) == Debug)
+    {
+        basename = NemuMustacheTemplatingEngine-d;
+    }
+
+    headers
+    {
+        ../../../include/Nemu/MustacheTemplatingEngine/MustacheTemplatingEngine.h
+        ../../../include/Nemu/MustacheTemplatingEngine/linkoptions.h
+    }
+
+    sources
+    {
+        ../../Source/MustacheTemplatingEngine.cpp
+    }
+}
