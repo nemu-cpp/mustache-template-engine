@@ -32,7 +32,7 @@ namespace Nemu
 class MustacheTemplatingEngine : public TemplatingEngine
 {
 public:
-    MustacheTemplatingEngine(;ljk);
+    MustacheTemplatingEngine();
 
     std::string render() const override;
 
