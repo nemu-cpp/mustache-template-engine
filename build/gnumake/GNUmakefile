@@ -37,11 +37,12 @@ endif
 # Additionally, this makefile is customizable with the following
 # settings:
 #
-#      ISHIKO_ERRORS_ROOT       Path to the Ishiko Errors installation
-#      G3LOG_ROOT               Path to the G3log installation
-#      BOOST_ROOT               Path to the Boost installation
-#      NEMUFRAMEWORK_NEMU_ROOT  Path to the Nemu installation
 #      MSTCH_ROOT               Path to the mstch installation
+#      ISHIKO_CPP_ERRORS_ROOT   Path to the Ishiko Errors installation
+#      ISHIKO_CPP_FMT_ROOT      Path to the fmt installation
+#      ISHIKO_CPP_LOGGING_ROOT  Path to the Ishiko Logging installation
+#      ISHIKO_CPP_BOOST_ROOT    Path to the Boost installation
+#      NEMU_CPP_CORE_ROOT       Path to the Nemu installation
 
 # Use "make RANLIB=''" for platforms without ranlib.
 RANLIB ?= ranlib
@@ -59,7 +60,7 @@ _equal  = $(and $(findstring $(1),$(2)),$(findstring $(2),$(1)))
 builddir = .
 
 ifneq ($(builddir),.)
-_builddir := $(if $(findstring $(abspath $(builddir)),$(builddir)),,../../)$(builddir)/../GNUmakefile/
+_builddir := $(if $(findstring $(abspath $(builddir)),$(builddir)),,../../)$(builddir)/../gnumake/
 _builddir_error := $(shell mkdir -p $(_builddir) 2>&1)
 $(if $(_builddir_error),$(error Failed to create build directory: $(_builddir_error)))
 endif
@@ -68,32 +69,34 @@ endif
 # Configurable settings:
 # 
 
-# Path to the Ishiko Errors installation
-ISHIKO_ERRORS_ROOT ?= $(ISHIKO)/Errors
-# Path to the G3log installation
-G3LOG_ROOT ?= $(G3LOG)
-# Path to the Boost installation
-BOOST_ROOT ?= $(BOOST)
-# Path to the Nemu installation
-NEMUFRAMEWORK_NEMU_ROOT ?= $(NEMU)/Nemu
 # Path to the mstch installation
 MSTCH_ROOT ?= $(MSTCH)
+# Path to the Ishiko Errors installation
+ISHIKO_CPP_ERRORS_ROOT ?= $(ISHIKO_CPP)/errors
+# Path to the fmt installation
+ISHIKO_CPP_FMT_ROOT ?= $(ISHIKO_CPP_THIRD_PARTY_FMT)
+# Path to the Ishiko Logging installation
+ISHIKO_CPP_LOGGING_ROOT ?= $(ISHIKO_CPP)/logging
+# Path to the Boost installation
+ISHIKO_CPP_BOOST_ROOT ?= $(ISHIKO_CPP_THIRD_PARTY_BOOST)
+# Path to the Nemu installation
+NEMU_CPP_CORE_ROOT ?= $(NEMU_CPP)/core
 
 # ------------
 
-all: ../Bakefile/../../../Lib/lib$(if $(call _equal,$(config),Debug),NemuMustache-d,NemuMustache).a
+all: ../bakefile/../../lib/lib$(if $(call _equal,$(config),Debug),NemuMustacheTemplatingEngine-d,NemuMustacheTemplatingEngine).a
 
-../Bakefile/../../../Lib/lib$(if $(call _equal,$(config),Debug),NemuMustache-d,NemuMustache).a: $(_builddir)NemuMustache_MustacheTemplatingEngine.o
-	$(AR) rc $@ $(_builddir)NemuMustache_MustacheTemplatingEngine.o
+../bakefile/../../lib/lib$(if $(call _equal,$(config),Debug),NemuMustacheTemplatingEngine-d,NemuMustacheTemplatingEngine).a: $(_builddir)NemuMustacheTemplatingEngine_MustacheTemplatingEngine.o
+	$(AR) rc $@ $(_builddir)NemuMustacheTemplatingEngine_MustacheTemplatingEngine.o
 	$(RANLIB) $@
 
-$(_builddir)NemuMustache_MustacheTemplatingEngine.o: ../../Source/MustacheTemplatingEngine.cpp
-	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -MD -MP -fPIC -DPIC -pthread -I$(ISHIKO_ERRORS_ROOT)/Include -I$(G3LOG_ROOT)/src -I$(G3LOG_ROOT)/build/include -I$(BOOST_ROOT) -I$(NEMUFRAMEWORK_NEMU_ROOT)/Include -I$(MSTCH_ROOT)/include -I../../../Include/NemuFramework/Nemu/Mustache -std=c++11 ../../Source/MustacheTemplatingEngine.cpp
+$(_builddir)NemuMustacheTemplatingEngine_MustacheTemplatingEngine.o: ../../Source/MustacheTemplatingEngine.cpp
+	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -MD -MP -fPIC -DPIC -pthread -I$(ISHIKO_CPP_FMT_ROOT)/include -I$(ISHIKO_CPP_LOGGING_ROOT)/include -I$(ISHIKO_CPP_ERRORS_ROOT)/include -I$(ISHIKO_CPP_BOOST_ROOT)/include -I$(NEMU_CPP_CORE_ROOT)/include -I$(MSTCH_ROOT)/include -I../../include/Nemu/MustacheTemplatingEngine -std=c++11 ../../Source/MustacheTemplatingEngine.cpp
 
 clean:
 	rm -f $(_builddir)*.o
 	rm -f $(_builddir)*.d
-	rm -f ../Bakefile/../../../Lib/lib$(if $(call _equal,$(config),Debug),NemuMustache-d,NemuMustache).a
+	rm -f ../bakefile/../../lib/lib$(if $(call _equal,$(config),Debug),NemuMustacheTemplatingEngine-d,NemuMustacheTemplatingEngine).a
 
 .PHONY: all clean
 

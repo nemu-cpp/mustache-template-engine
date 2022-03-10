@@ -2,15 +2,18 @@ version: 2
 jobs:
   build:
     docker:
-      - image: ishiko/gcc-ishiko-cpp:0.10.0
+      - image: ishiko/gcc-ishiko-cpp:0.11.0
     steps:
       - run: 
           name: "Set NEMU_CPP environment variable and create workspace directory"
           command: mkdir -p /projects/nemu/cpp && echo 'export NEMU_CPP="/projects/nemu/cpp"' >> $BASH_ENV
+      - run:
+          name: "Install build dependency: Nemu/C++ Core"
+          command: cd /projects/nemu/cpp && git clone https://github.com/nemu-cpp/core.git && cd core/build/gnumake && make
       - checkout:
           path: /projects/nemu/cpp/mustache-templating-engine
       - run:
-          name: Build Core
+          name: Build
           command: cd /projects/nemu/cpp/mustache-templating-engine/build/gnumake && make
 workflows:
   version: 2
