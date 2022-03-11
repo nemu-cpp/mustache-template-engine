@@ -19,8 +19,14 @@ program NemuMustacheTemplatingEngineTests : IshikoTests
         libs += IshikoTests IshikoTestsCore IshikoProcess boost_program_options boost_filesystem ;
     }
 
+    headers
+    {
+        ../../src/MustacheTemplatingEngineTests.hpp
+    }
+
     sources
     {
         ../../src/main.cpp
+        ../../src/MustacheTemplatingEngineTests.cpp
     }
 }
