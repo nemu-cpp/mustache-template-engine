@@ -37,16 +37,21 @@ endif
 # Additionally, this makefile is customizable with the following
 # settings:
 #
-#      ISHIKO_CPP_BASEPLATFORM_ROOT   Path to the Ishiko BasePlatform installation
-#      ISHIKO_CPP_ERRORS_ROOT         Path to the Ishiko Errors installation
-#      ISHIKO_CPP_BOOST_ROOT          Path to the Boost installation
-#      ISHIKO_CPP_FILESYSTEM_ROOT     Path to the Ishiko FileSystem installation
-#      ISHIKO_CPP_TEXT_ROOT           Path to the Ishiko/Text installation
-#      ISHIKO_CPP_TYPES_ROOT          Path to the Ishiko Types installation
-#      ISHIKO_CPP_DIFF_ROOT           Path to the Ishiko Diff installation
-#      ISHIKO_CPP_PROCESS_ROOT        Path to the Ishiko Process installation
-#      ISHIKO_CPP_TESTFRAMEWORK_ROOT  Path to the Ishiko TestFramework installation
-#      ISHIKO_CPP_TESTS_ROOT          Path to the Ishiko Tests installation
+#      ISHIKO_CPP_BASEPLATFORM_ROOT            Path to the Ishiko BasePlatform installation
+#      ISHIKO_CPP_ERRORS_ROOT                  Path to the Ishiko Errors installation
+#      ISHIKO_CPP_BOOST_ROOT                   Path to the Boost installation
+#      ISHIKO_CPP_FILESYSTEM_ROOT              Path to the Ishiko FileSystem installation
+#      ISHIKO_CPP_TEXT_ROOT                    Path to the Ishiko/Text installation
+#      ISHIKO_CPP_TYPES_ROOT                   Path to the Ishiko Types installation
+#      ISHIKO_CPP_DIFF_ROOT                    Path to the Ishiko Diff installation
+#      ISHIKO_CPP_PROCESS_ROOT                 Path to the Ishiko Process installation
+#      ISHIKO_CPP_TESTFRAMEWORK_ROOT           Path to the Ishiko TestFramework installation
+#      ISHIKO_CPP_TESTS_ROOT                   Path to the Ishiko Tests installation
+#      MSTCH_ROOT                              Path to the mstch installation
+#      ISHIKO_CPP_FMT_ROOT                     Path to the fmt installation
+#      ISHIKO_CPP_LOGGING_ROOT                 Path to the Ishiko Logging installation
+#      NEMU_CPP_CORE_ROOT                      Path to the Nemu installation
+#      NEMU_CPP_MUSTACHETEMPLATINGENGINE_ROOT  Path to the Nemu installation
 
 # Use "make RANLIB=''" for platforms without ranlib.
 RANLIB ?= ranlib
@@ -87,19 +92,29 @@ ISHIKO_CPP_PROCESS_ROOT ?= $(ISHIKO_CPP)/process
 ISHIKO_CPP_TESTFRAMEWORK_ROOT ?= $(ISHIKO_CPP)/tests
 # Path to the Ishiko Tests installation
 ISHIKO_CPP_TESTS_ROOT ?= $(ISHIKO_CPP)/tests
+# Path to the mstch installation
+MSTCH_ROOT ?= $(MSTCH)
+# Path to the fmt installation
+ISHIKO_CPP_FMT_ROOT ?= $(ISHIKO_CPP_THIRD_PARTY_FMT)
+# Path to the Ishiko Logging installation
+ISHIKO_CPP_LOGGING_ROOT ?= $(ISHIKO_CPP)/logging
+# Path to the Nemu installation
+NEMU_CPP_CORE_ROOT ?= $(NEMU_CPP)/core
+# Path to the Nemu installation
+NEMU_CPP_MUSTACHETEMPLATINGENGINE_ROOT ?= $(NEMU_CPP)/mustache-templating-engine
 
 # ------------
 
 all: $(_builddir)NemuMustacheTemplatingEngineTests
 
 $(_builddir)NemuMustacheTemplatingEngineTests: $(_builddir)NemuMustacheTemplatingEngineTests_main.o $(_builddir)NemuMustacheTemplatingEngineTests_MustacheTemplatingEngineTests.o
-	$(CXX) -o $@ $(LDFLAGS) $(_builddir)NemuMustacheTemplatingEngineTests_main.o $(_builddir)NemuMustacheTemplatingEngineTests_MustacheTemplatingEngineTests.o -L$(ISHIKO_CPP_ERRORS_ROOT)/lib -L$(ISHIKO_CPP_BOOST_ROOT)/lib -L$(ISHIKO_CPP_FILESYSTEM_ROOT)/lib -L$(ISHIKO_CPP_TEXT_ROOT)/lib -L$(ISHIKO_CPP_TYPES_ROOT)/lib -L$(ISHIKO_CPP_DIFF_ROOT)/lib -L$(ISHIKO_CPP_PROCESS_ROOT)/lib -L$(ISHIKO_CPP_TESTFRAMEWORK_ROOT)/lib -L$(ISHIKO_CPP_TESTS_ROOT)/lib -lIshikoTests -lIshikoTestsCore -lIshikoProcess -lboost_program_options -lboost_filesystem -pthread
+	$(CXX) -o $@ $(LDFLAGS) $(_builddir)NemuMustacheTemplatingEngineTests_main.o $(_builddir)NemuMustacheTemplatingEngineTests_MustacheTemplatingEngineTests.o -L$(ISHIKO_CPP_FMT_ROOT)/lib -L$(ISHIKO_CPP_LOGGING_ROOT)/lib -L$(ISHIKO_CPP_ERRORS_ROOT)/lib -L$(ISHIKO_CPP_BOOST_ROOT)/lib -L$(NEMU_CPP_CORE_ROOT)/lib -L$(MSTCH_ROOT)/src/$(config) -L$(NEMU_CPP_MUSTACHETEMPLATINGENGINE_ROOT)/lib -L$(ISHIKO_CPP_FILESYSTEM_ROOT)/lib -L$(ISHIKO_CPP_TEXT_ROOT)/lib -L$(ISHIKO_CPP_TYPES_ROOT)/lib -L$(ISHIKO_CPP_DIFF_ROOT)/lib -L$(ISHIKO_CPP_PROCESS_ROOT)/lib -L$(ISHIKO_CPP_TESTFRAMEWORK_ROOT)/lib -L$(ISHIKO_CPP_TESTS_ROOT)/lib -lmstch -lIshikoTests -lIshikoTestsCore -lIshikoProcess -lboost_program_options -lboost_filesystem -pthread
 
 $(_builddir)NemuMustacheTemplatingEngineTests_main.o: ../../src/main.cpp
-	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -MD -MP -pthread -I$(ISHIKO_CPP_ERRORS_ROOT)/include -I$(ISHIKO_CPP_BASEPLATFORM_ROOT)/include -I$(ISHIKO_CPP_BOOST_ROOT)/include -I$(ISHIKO_CPP_FILESYSTEM_ROOT)/include -I$(ISHIKO_CPP_TEXT_ROOT)/include -I$(ISHIKO_CPP_TYPES_ROOT)/include -I$(ISHIKO_CPP_DIFF_ROOT)/include -I$(ISHIKO_CPP_PROCESS_ROOT)/include -I$(ISHIKO_CPP_TESTFRAMEWORK_ROOT)/include -I$(ISHIKO_CPP_TESTS_ROOT)/include -std=c++11 ../../src/main.cpp
+	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -MD -MP -pthread -I$(ISHIKO_CPP_FMT_ROOT)/include -I$(ISHIKO_CPP_LOGGING_ROOT)/include -I$(ISHIKO_CPP_ERRORS_ROOT)/include -I$(ISHIKO_CPP_BOOST_ROOT)/include -I$(NEMU_CPP_CORE_ROOT)/include -I$(MSTCH_ROOT)/include -I$(NEMU_CPP_MUSTACHETEMPLATINGENGINE_ROOT)/include -I$(ISHIKO_CPP_BASEPLATFORM_ROOT)/include -I$(ISHIKO_CPP_FILESYSTEM_ROOT)/include -I$(ISHIKO_CPP_TEXT_ROOT)/include -I$(ISHIKO_CPP_TYPES_ROOT)/include -I$(ISHIKO_CPP_DIFF_ROOT)/include -I$(ISHIKO_CPP_PROCESS_ROOT)/include -I$(ISHIKO_CPP_TESTFRAMEWORK_ROOT)/include -I$(ISHIKO_CPP_TESTS_ROOT)/include -std=c++11 ../../src/main.cpp
 
 $(_builddir)NemuMustacheTemplatingEngineTests_MustacheTemplatingEngineTests.o: ../../src/MustacheTemplatingEngineTests.cpp
-	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -MD -MP -pthread -I$(ISHIKO_CPP_ERRORS_ROOT)/include -I$(ISHIKO_CPP_BASEPLATFORM_ROOT)/include -I$(ISHIKO_CPP_BOOST_ROOT)/include -I$(ISHIKO_CPP_FILESYSTEM_ROOT)/include -I$(ISHIKO_CPP_TEXT_ROOT)/include -I$(ISHIKO_CPP_TYPES_ROOT)/include -I$(ISHIKO_CPP_DIFF_ROOT)/include -I$(ISHIKO_CPP_PROCESS_ROOT)/include -I$(ISHIKO_CPP_TESTFRAMEWORK_ROOT)/include -I$(ISHIKO_CPP_TESTS_ROOT)/include -std=c++11 ../../src/MustacheTemplatingEngineTests.cpp
+	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -MD -MP -pthread -I$(ISHIKO_CPP_FMT_ROOT)/include -I$(ISHIKO_CPP_LOGGING_ROOT)/include -I$(ISHIKO_CPP_ERRORS_ROOT)/include -I$(ISHIKO_CPP_BOOST_ROOT)/include -I$(NEMU_CPP_CORE_ROOT)/include -I$(MSTCH_ROOT)/include -I$(NEMU_CPP_MUSTACHETEMPLATINGENGINE_ROOT)/include -I$(ISHIKO_CPP_BASEPLATFORM_ROOT)/include -I$(ISHIKO_CPP_FILESYSTEM_ROOT)/include -I$(ISHIKO_CPP_TEXT_ROOT)/include -I$(ISHIKO_CPP_TYPES_ROOT)/include -I$(ISHIKO_CPP_DIFF_ROOT)/include -I$(ISHIKO_CPP_PROCESS_ROOT)/include -I$(ISHIKO_CPP_TESTFRAMEWORK_ROOT)/include -I$(ISHIKO_CPP_TESTS_ROOT)/include -std=c++11 ../../src/MustacheTemplatingEngineTests.cpp
 
 clean:
 	rm -f $(_builddir)*.o
