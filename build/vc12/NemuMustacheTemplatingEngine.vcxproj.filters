@@ -17,15 +17,18 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\Nemu\MustacheTemplatingEngine\MustacheTemplatingEngine.h">
+    <ClInclude Include="..\..\include\Nemu\MustacheTemplatingEngine.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\Nemu\MustacheTemplatingEngine\linkoptions.h">
+    <ClInclude Include="..\..\include\Nemu\MustacheTemplatingEngine\MustacheTemplatingEngine.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\Nemu\MustacheTemplatingEngine\linkoptions.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Source\MustacheTemplatingEngine.cpp">
+    <ClCompile Include="..\..\src\MustacheTemplatingEngine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

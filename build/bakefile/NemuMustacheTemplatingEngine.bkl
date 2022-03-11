@@ -35,12 +35,13 @@ library NemuMustacheTemplatingEngine : NemuCore, mstch
 
     headers
     {
-        ../../include/Nemu/MustacheTemplatingEngine/MustacheTemplatingEngine.h
-        ../../include/Nemu/MustacheTemplatingEngine/linkoptions.h
+        ../../include/Nemu/MustacheTemplatingEngine.hpp
+        ../../include/Nemu/MustacheTemplatingEngine/MustacheTemplatingEngine.hpp
+        ../../include/Nemu/MustacheTemplatingEngine/linkoptions.hpp
     }
 
     sources
     {
-        ../../Source/MustacheTemplatingEngine.cpp
+        ../../src/MustacheTemplatingEngine.cpp
     }
 }

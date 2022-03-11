@@ -5,7 +5,7 @@
 */
 
 #include "MustacheTemplatingEngineTests.hpp"
-#include "Nemu/MustacheTemplatingEngine/MustacheTemplatingEngine.h"
+#include "Nemu/MustacheTemplatingEngine/MustacheTemplatingEngine.hpp"
 
 using namespace Ishiko::Tests;
 using namespace Nemu;
