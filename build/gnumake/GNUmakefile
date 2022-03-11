@@ -90,8 +90,8 @@ all: ../bakefile/../../lib/lib$(if $(call _equal,$(config),Debug),NemuMustacheTe
 	$(AR) rc $@ $(_builddir)NemuMustacheTemplatingEngine_MustacheTemplatingEngine.o
 	$(RANLIB) $@
 
-$(_builddir)NemuMustacheTemplatingEngine_MustacheTemplatingEngine.o: ../../Source/MustacheTemplatingEngine.cpp
-	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -MD -MP -fPIC -DPIC -pthread -I$(ISHIKO_CPP_FMT_ROOT)/include -I$(ISHIKO_CPP_LOGGING_ROOT)/include -I$(ISHIKO_CPP_ERRORS_ROOT)/include -I$(ISHIKO_CPP_BOOST_ROOT)/include -I$(NEMU_CPP_CORE_ROOT)/include -I$(MSTCH_ROOT)/include -I../../include/Nemu/MustacheTemplatingEngine -std=c++11 ../../Source/MustacheTemplatingEngine.cpp
+$(_builddir)NemuMustacheTemplatingEngine_MustacheTemplatingEngine.o: ../../src/MustacheTemplatingEngine.cpp
+	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -MD -MP -fPIC -DPIC -pthread -I$(ISHIKO_CPP_FMT_ROOT)/include -I$(ISHIKO_CPP_LOGGING_ROOT)/include -I$(ISHIKO_CPP_ERRORS_ROOT)/include -I$(ISHIKO_CPP_BOOST_ROOT)/include -I$(NEMU_CPP_CORE_ROOT)/include -I$(MSTCH_ROOT)/include -I../../include/Nemu/MustacheTemplatingEngine -std=c++11 ../../src/MustacheTemplatingEngine.cpp
 
 clean:
 	rm -f $(_builddir)*.o

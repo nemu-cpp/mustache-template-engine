@@ -150,11 +150,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Source\MustacheTemplatingEngine.cpp" />
+    <ClCompile Include="..\..\src\MustacheTemplatingEngine.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\Nemu\MustacheTemplatingEngine\MustacheTemplatingEngine.h" />
-    <ClInclude Include="..\..\include\Nemu\MustacheTemplatingEngine\linkoptions.h" />
+    <ClInclude Include="..\..\include\Nemu\MustacheTemplatingEngine.hpp" />
+    <ClInclude Include="..\..\include\Nemu\MustacheTemplatingEngine\MustacheTemplatingEngine.hpp" />
+    <ClInclude Include="..\..\include\Nemu\MustacheTemplatingEngine\linkoptions.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
