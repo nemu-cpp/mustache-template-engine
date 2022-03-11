@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2019 Xavier Leclercq
+    Copyright (c) 2019-2022 Xavier Leclercq
 
     Permission is hereby granted, free of charge, to any person obtaining a
     copy of this software and associated documentation files (the "Software"),
@@ -24,9 +24,9 @@
 #define _NEMUFRAMEWORK_NEMU_MUSTACHE_LINKOPTIONS_H_
 
 #ifdef _DEBUG
-#pragma comment(lib, "NemuMustache-d.lib")
+#pragma comment(lib, "NemuMustacheTemplatingEngine-d.lib")
 #else
-#pragma comment(lib, "NemuMustache.lib")
+#pragma comment(lib, "NemuMustacheTemplatingEngine.lib")
 #endif
 
 #endif

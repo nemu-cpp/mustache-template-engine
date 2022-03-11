@@ -5,8 +5,10 @@
 */
 
 #include "MustacheTemplatingEngineTests.hpp"
+#include "Nemu/MustacheTemplatingEngine/MustacheTemplatingEngine.h"
 
 using namespace Ishiko::Tests;
+using namespace Nemu;
 
 MustacheTemplatingEngineTests::MustacheTemplatingEngineTests(const TestNumber& number, const TestContext& context)
     : TestSequence(number, "MustacheTemplatingEngine tests", context)
@@ -16,4 +18,7 @@ MustacheTemplatingEngineTests::MustacheTemplatingEngineTests(const TestNumber& n
 
 void MustacheTemplatingEngineTests::ConstructorTest1(Test& test)
 {
+    MustacheTemplatingEngine templatingEngine;
+
+    ISHIKO_PASS();
 }
