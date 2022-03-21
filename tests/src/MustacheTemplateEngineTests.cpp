@@ -4,10 +4,10 @@
     See https://github.com/nemu-cpp/mustache-templating-engine/blob/main/LICENSE.txt
 */
 
-#include "MustacheTemplatingEngineTests.hpp"
-#include "Nemu/MustacheTemplatingEngine/MustacheTemplatingEngine.hpp"
+#include "MustacheTemplateEngineTests.hpp"
+#include "Nemu/MustacheTemplateEngine/MustacheTemplatingEngine.hpp"
 
-using namespace Ishiko::Tests;
+using namespace Ishiko;
 using namespace Nemu;
 
 MustacheTemplatingEngineTests::MustacheTemplatingEngineTests(const TestNumber& number, const TestContext& context)
@@ -20,5 +20,5 @@ void MustacheTemplatingEngineTests::ConstructorTest1(Test& test)
 {
     MustacheTemplatingEngine templatingEngine;
 
-    ISHIKO_PASS();
+    ISHIKO_TEST_PASS();
 }

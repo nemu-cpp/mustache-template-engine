@@ -6,16 +6,16 @@ import $(nemupath)/core/include/Nemu/Core.bkl;
 toolsets = gnu vs2019 vs2017 vs2015 vs2013;
 
 gnu.makefile = ../gnumake/GNUmakefile;
-vs2019.solutionfile = ../vc16/NemuMustacheTemplatingEngine.sln;
-vs2017.solutionfile = ../vc15/NemuMustacheTemplatingEngine.sln;
-vs2015.solutionfile = ../vc14/NemuMustacheTemplatingEngine.sln;
-vs2013.solutionfile = ../vc12/NemuMustacheTemplatingEngine.sln;
+vs2019.solutionfile = ../vc16/NemuMustacheTemplateEngine.sln;
+vs2017.solutionfile = ../vc15/NemuMustacheTemplateEngine.sln;
+vs2015.solutionfile = ../vc14/NemuMustacheTemplateEngine.sln;
+vs2013.solutionfile = ../vc12/NemuMustacheTemplateEngine.sln;
 
-library NemuMustacheTemplatingEngine : NemuCore, mstch
+library NemuMustacheTemplateEngine : NemuCore, mstch
 {
     archs = x86 x86_64;
    
-    includedirs += ../../include/Nemu/MustacheTemplatingEngine;
+    includedirs += ../../include/Nemu/MustacheTemplateEngine;
 
     if ($(toolset) == gnu)
     {
@@ -30,7 +30,7 @@ library NemuMustacheTemplatingEngine : NemuCore, mstch
 
     if ($(config) == Debug)
     {
-        basename = NemuMustacheTemplatingEngine-d;
+        basename = NemuMustacheTemplateEngine-d;
     }
 
     headers

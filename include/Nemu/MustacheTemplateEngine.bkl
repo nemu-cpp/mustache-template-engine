@@ -1,0 +1,25 @@
+ishikopath = envvar("ISHIKO_CPP");
+import $(ishikopath)/third-party-glue/include/Ishiko/ThirdParty/mstch.bkl;
+nemupath = envvar("NEMU_CPP");
+import $(nemupath)/core/include/Nemu/Core.bkl;
+
+setting NEMU_CPP_MUSTACHETEMPLATEENGINE_ROOT
+{
+    help = "Path to the Nemu installation";
+    default = '$(NEMU_CPP)/mustache-template-engine';
+}
+
+template NemuMustacheTemplateEngine : NemuCore, mstch
+{
+    includedirs += $(NEMU_CPP_MUSTACHETEMPLATEENGINE_ROOT)/include;
+
+    if ($(toolset) == gnu)
+    {
+        libdirs += $(NEMU_CPP_MUSTACHETEMPLATEENGINE_ROOT)/lib;
+    }
+
+    if ($(toolset) != gnu)
+    {
+        libdirs += $(NEMU_CPP_MUSTACHETEMPLATEENGINE_ROOT)/lib/$(arch);
+    }
+}
