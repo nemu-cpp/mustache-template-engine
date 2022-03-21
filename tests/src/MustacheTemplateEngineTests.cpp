@@ -1,24 +1,24 @@
 /*
     Copyright (c) 2022 Xavier Leclercq
     Released under the MIT License
-    See https://github.com/nemu-cpp/mustache-templating-engine/blob/main/LICENSE.txt
+    See https://github.com/nemu-cpp/mustache-template-engine/blob/main/LICENSE.txt
 */
 
 #include "MustacheTemplateEngineTests.hpp"
-#include "Nemu/MustacheTemplateEngine/MustacheTemplatingEngine.hpp"
+#include "Nemu/MustacheTemplateEngine/MustacheTemplateEngine.hpp"
 
 using namespace Ishiko;
 using namespace Nemu;
 
-MustacheTemplatingEngineTests::MustacheTemplatingEngineTests(const TestNumber& number, const TestContext& context)
-    : TestSequence(number, "MustacheTemplatingEngine tests", context)
+MustacheTemplateEngineTests::MustacheTemplateEngineTests(const TestNumber& number, const TestContext& context)
+    : TestSequence(number, "MustacheTemplateEngine tests", context)
 {
     append<HeapAllocationErrorsTest>("Creation test 1", ConstructorTest1);
 }
 
-void MustacheTemplatingEngineTests::ConstructorTest1(Test& test)
+void MustacheTemplateEngineTests::ConstructorTest1(Test& test)
 {
-    MustacheTemplatingEngine templatingEngine;
+    MustacheTemplateEngine templatingEngine;
 
     ISHIKO_TEST_PASS();
 }
