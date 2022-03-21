@@ -1,4 +1,4 @@
-# Nemu/C++ MustacheTemplatingEngine
+# Nemu/C++ MustacheTemplateEngine
 
 This component adds support for [{{ mustache }}](https://mustache.github.io/) templates to Nemu. It makes extensive use
 of the [no1msd/mstch](https://github.com/no1msd/mstch) {{ mustache }} implementation. 
@@ -12,9 +12,9 @@ of the [no1msd/mstch](https://github.com/no1msd/mstch) {{ mustache }} implementa
 
 # Project Status
 
-[![nemu-cpp](https://circleci.com/gh/nemu-cpp/mustache-templating-engine.svg?style=shield)](https://circleci.com/gh/nemu-cpp/mustache-templating-engine)
+[![nemu-cpp](https://circleci.com/gh/nemu-cpp/mustache-template-engine.svg?style=shield)](https://circleci.com/gh/nemu-cpp/mustache-template-engine)
 
-This project is intended for use by its author only.
+This project is in early development and not ready for public use yet.
 
 # Usage
 
@@ -28,4 +28,4 @@ None.
 
 Copyright (c) 2019-2022 Xavier Leclercq\
 Released under the MIT License\
-See https://github.com/nemu-cpp/mustache-templating-engine/blob/main/LICENSE.txt
+See https://github.com/nemu-cpp/mustache-template-engine/blob/main/LICENSE.txt
