@@ -95,12 +95,12 @@ NEMU_CPP_CORE_ROOT ?= $(NEMU_CPP)/core
 
 all: ../bakefile/../../lib/lib$(if $(call _equal,$(config),Debug),NemuMustacheTemplateEngine-d,NemuMustacheTemplateEngine).a
 
-../bakefile/../../lib/lib$(if $(call _equal,$(config),Debug),NemuMustacheTemplateEngine-d,NemuMustacheTemplateEngine).a: $(_builddir)NemuMustacheTemplateEngine_MustacheTemplatingEngine.o
-	$(AR) rc $@ $(_builddir)NemuMustacheTemplateEngine_MustacheTemplatingEngine.o
+../bakefile/../../lib/lib$(if $(call _equal,$(config),Debug),NemuMustacheTemplateEngine-d,NemuMustacheTemplateEngine).a: $(_builddir)NemuMustacheTemplateEngine_MustacheTemplateEngine.o
+	$(AR) rc $@ $(_builddir)NemuMustacheTemplateEngine_MustacheTemplateEngine.o
 	$(RANLIB) $@
 
-$(_builddir)NemuMustacheTemplateEngine_MustacheTemplatingEngine.o: ../../src/MustacheTemplatingEngine.cpp
-	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -MD -MP -fPIC -DPIC -pthread -I$(ISHIKO_CPP_ERRORS_ROOT)/include -I$(ISHIKO_CPP_BASEPLATFORM_ROOT)/include -I$(ISHIKO_CPP_TEXT_ROOT)/include -I$(ISHIKO_CPP_NETWORKING_ROOT)/include -I$(ISHIKO_CPP_FMT_ROOT)/include -I$(ISHIKO_CPP_LOGGING_ROOT)/include -I$(ISHIKO_CPP_BOOST_ROOT)/include -I$(NEMU_CPP_CORE_ROOT)/include -I$(MSTCH_ROOT)/include -I../../include/Nemu/MustacheTemplateEngine -std=c++11 ../../src/MustacheTemplatingEngine.cpp
+$(_builddir)NemuMustacheTemplateEngine_MustacheTemplateEngine.o: ../../src/MustacheTemplateEngine.cpp
+	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -MD -MP -fPIC -DPIC -pthread -I$(ISHIKO_CPP_ERRORS_ROOT)/include -I$(ISHIKO_CPP_BASEPLATFORM_ROOT)/include -I$(ISHIKO_CPP_TEXT_ROOT)/include -I$(ISHIKO_CPP_NETWORKING_ROOT)/include -I$(ISHIKO_CPP_FMT_ROOT)/include -I$(ISHIKO_CPP_LOGGING_ROOT)/include -I$(ISHIKO_CPP_BOOST_ROOT)/include -I$(NEMU_CPP_CORE_ROOT)/include -I$(MSTCH_ROOT)/include -I../../include/Nemu/MustacheTemplateEngine -std=c++11 ../../src/MustacheTemplateEngine.cpp
 
 clean:
 	rm -f $(_builddir)*.o
