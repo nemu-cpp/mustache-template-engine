@@ -4,11 +4,11 @@
     See https://github.com/nemu-cpp/mustache-templating-engine/blob/main/LICENSE.txt
 */
 
-#include "MustacheTemplatingEngineTests.hpp"
+#include "MustacheTemplateEngineTests.hpp"
 #include "Nemu/MustacheTemplateEngine/linkoptions.hpp"
 #include <Ishiko/Tests.hpp>
 
-using namespace Ishiko::Tests;
+using namespace Ishiko;
 
 int main(int argc, char* argv[])
 {
