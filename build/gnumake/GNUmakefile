@@ -45,6 +45,7 @@ endif
 #      ISHIKO_CPP_TEXT_ROOT          Path to the Ishiko/Text installation
 #      ISHIKO_CPP_NETWORKING_ROOT    Path to the Ishiko Networking installation
 #      ISHIKO_CPP_BOOST_ROOT         Path to the Boost installation
+#      ISHIKO_CPP_TIME_ROOT          Path to the Ishiko Timeinstallation
 #      NEMU_CPP_CORE_ROOT            Path to the Nemu installation
 
 # Use "make RANLIB=''" for platforms without ranlib.
@@ -88,6 +89,8 @@ ISHIKO_CPP_TEXT_ROOT ?= $(ISHIKO_CPP)/text
 ISHIKO_CPP_NETWORKING_ROOT ?= $(ISHIKO_CPP)/networking
 # Path to the Boost installation
 ISHIKO_CPP_BOOST_ROOT ?= $(ISHIKO_CPP_THIRD_PARTY_BOOST)
+# Path to the Ishiko Timeinstallation
+ISHIKO_CPP_TIME_ROOT ?= $(ISHIKO_CPP)/time
 # Path to the Nemu installation
 NEMU_CPP_CORE_ROOT ?= $(NEMU_CPP)/core
 
@@ -100,7 +103,7 @@ all: ../bakefile/../../lib/lib$(if $(call _equal,$(config),Debug),NemuMustacheTe
 	$(RANLIB) $@
 
 $(_builddir)NemuMustacheTemplateEngine_MustacheTemplateEngine.o: ../../src/MustacheTemplateEngine.cpp
-	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -MD -MP -fPIC -DPIC -pthread -I$(ISHIKO_CPP_ERRORS_ROOT)/include -I$(ISHIKO_CPP_BASEPLATFORM_ROOT)/include -I$(ISHIKO_CPP_TEXT_ROOT)/include -I$(ISHIKO_CPP_NETWORKING_ROOT)/include -I$(ISHIKO_CPP_FMT_ROOT)/include -I$(ISHIKO_CPP_LOGGING_ROOT)/include -I$(ISHIKO_CPP_BOOST_ROOT)/include -I$(NEMU_CPP_CORE_ROOT)/include -I$(MSTCH_ROOT)/include -I../../include/Nemu/MustacheTemplateEngine -std=c++11 ../../src/MustacheTemplateEngine.cpp
+	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -MD -MP -fPIC -DPIC -pthread -I$(ISHIKO_CPP_ERRORS_ROOT)/include -I$(ISHIKO_CPP_BASEPLATFORM_ROOT)/include -I$(ISHIKO_CPP_TEXT_ROOT)/include -I$(ISHIKO_CPP_NETWORKING_ROOT)/include -I$(ISHIKO_CPP_FMT_ROOT)/include -I$(ISHIKO_CPP_BOOST_ROOT)/include -I$(ISHIKO_CPP_TIME_ROOT)/include -I$(ISHIKO_CPP_LOGGING_ROOT)/include -I$(NEMU_CPP_CORE_ROOT)/include -I$(MSTCH_ROOT)/include -I../../include/Nemu/MustacheTemplateEngine -std=c++11 ../../src/MustacheTemplateEngine.cpp
 
 clean:
 	rm -f $(_builddir)*.o

@@ -13,7 +13,7 @@
 namespace Nemu
 {
 
-class MustacheTemplateEngine : public TemplatingEngine
+class MustacheTemplateEngine : public TemplateEngine
 {
 public:
     MustacheTemplateEngine();
