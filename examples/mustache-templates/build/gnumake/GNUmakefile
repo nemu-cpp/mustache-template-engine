@@ -37,32 +37,27 @@ endif
 # Additionally, this makefile is customizable with the following
 # settings:
 #
-#      MSTCH_ROOT                    Path to the mstch installation
-#      ISHIKO_CPP_ERRORS_ROOT        Path to the Ishiko Errors installation
-#      ISHIKO_CPP_BASEPLATFORM_ROOT  Path to the Ishiko BasePlatform installation
-#      ISHIKO_CPP_TEXT_ROOT          Path to the Ishiko/Text installation
-#      ISHIKO_CPP_NETWORKING_ROOT    Path to the Ishiko Networking installation
-#      ISHIKO_CPP_BOOST_ROOT         Path to the Boost installation
-#      ISHIKO_CPP_FMT_ROOT           Path to the fmt installation
-#      ISHIKO_CPP_TIME_ROOT          Path to the Ishiko Timeinstallation
-#      ISHIKO_CPP_TYPES_ROOT         Path to the Ishiko Types installation
-#      ISHIKO_CPP_HTTP_ROOT          Path to the Ishiko HTTP installation
-#      ISHIKO_CPP_FILESYSTEM_ROOT    Path to the Ishiko FileSystem installation
-#      ISHIKO_CPP_LOGGING_ROOT       Path to the Ishiko Logging installation
-#      NEMU_CPP_CORE_ROOT            Path to the Nemu installation
-#      NEMU_CPP_WEBFRAMEWORK_ROOT    Path to the Nemu WebFramework installation
+#      MSTCH_ROOT                            Path to the mstch installation
+#      ISHIKO_CPP_ERRORS_ROOT                Path to the Ishiko Errors installation
+#      ISHIKO_CPP_BASEPLATFORM_ROOT          Path to the Ishiko BasePlatform installation
+#      ISHIKO_CPP_TEXT_ROOT                  Path to the Ishiko/Text installation
+#      ISHIKO_CPP_NETWORKING_ROOT            Path to the Ishiko Networking installation
+#      ISHIKO_CPP_BOOST_ROOT                 Path to the Boost installation
+#      ISHIKO_CPP_FMT_ROOT                   Path to the fmt installation
+#      ISHIKO_CPP_TIME_ROOT                  Path to the Ishiko Timeinstallation
+#      ISHIKO_CPP_TYPES_ROOT                 Path to the Ishiko Types installation
+#      ISHIKO_CPP_HTTP_ROOT                  Path to the Ishiko HTTP installation
+#      ISHIKO_CPP_FILESYSTEM_ROOT            Path to the Ishiko FileSystem installation
+#      ISHIKO_CPP_LOGGING_ROOT               Path to the Ishiko Logging installation
+#      NEMU_CPP_CORE_ROOT                    Path to the Nemu installation
+#      NEMU_CPP_WEBFRAMEWORK_ROOT            Path to the Nemu WebFramework installation
+#      NEMU_CPP_MUSTACHETEMPLATEENGINE_ROOT  Path to the Nemu installation
 
 # Use "make RANLIB=''" for platforms without ranlib.
 RANLIB ?= ranlib
 
 CC := cc
 CXX := c++
-
-_true  := true
-_false :=
-_not    = $(if $(1),$(_false),$(_true_))
-_equal  = $(and $(findstring $(1),$(2)),$(findstring $(2),$(1)))
-
 
 # The directory for the build files, may be overridden on make command line.
 builddir = .
@@ -105,22 +100,24 @@ ISHIKO_CPP_LOGGING_ROOT ?= $(ISHIKO_CPP)/logging
 NEMU_CPP_CORE_ROOT ?= $(NEMU_CPP)/core
 # Path to the Nemu WebFramework installation
 NEMU_CPP_WEBFRAMEWORK_ROOT ?= $(NEMU_CPP)/web-framework
+# Path to the Nemu installation
+NEMU_CPP_MUSTACHETEMPLATEENGINE_ROOT ?= $(NEMU_CPP)/mustache-template-engine
 
 # ------------
 
-all: ../bakefile/../../lib/lib$(if $(call _equal,$(config),Debug),NemuMustacheTemplateEngine-d,NemuMustacheTemplateEngine).a
+all: ../../bin/NemuMustacheTemplatesServer
 
-../bakefile/../../lib/lib$(if $(call _equal,$(config),Debug),NemuMustacheTemplateEngine-d,NemuMustacheTemplateEngine).a: $(_builddir)NemuMustacheTemplateEngine_MustacheTemplateEngine.o
-	$(AR) rc $@ $(_builddir)NemuMustacheTemplateEngine_MustacheTemplateEngine.o
-	$(RANLIB) $@
+../../bin/NemuMustacheTemplatesServer: $(_builddir)NemuMustacheTemplatesServer_main.o
+	@mkdir -p $(dir $@)
+	$(CXX) -o $@ $(LDFLAGS) $(_builddir)NemuMustacheTemplatesServer_main.o -L$(ISHIKO_CPP_ERRORS_ROOT)/lib -L$(ISHIKO_CPP_TEXT_ROOT)/lib -L$(ISHIKO_CPP_NETWORKING_ROOT)/lib -L$(ISHIKO_CPP_BOOST_ROOT)/lib -L$(ISHIKO_CPP_FILESYSTEM_ROOT)/lib -L$(ISHIKO_CPP_FMT_ROOT)/lib -L$(ISHIKO_CPP_TIME_ROOT)/lib -L$(ISHIKO_CPP_LOGGING_ROOT)/lib -L$(NEMU_CPP_CORE_ROOT)/lib -L$(ISHIKO_CPP_TYPES_ROOT)/lib -L$(ISHIKO_CPP_HTTP_ROOT)/lib -L$(NEMU_CPP_WEBFRAMEWORK_ROOT)/lib -L$(MSTCH_ROOT)/src/$(config) -L$(NEMU_CPP_MUSTACHETEMPLATEENGINE_ROOT)/lib -lNemuMustacheTemplateEngine -lNemuWebFramework -lNemuCore -lIshikoHTTP -lIshikoNetworking -lIshikoTime -lIshikoText -lIshikoTypes -lIshikoLogging -lIshikoErrors -lmstch -lfmt -pthread
 
-$(_builddir)NemuMustacheTemplateEngine_MustacheTemplateEngine.o: ../../src/MustacheTemplateEngine.cpp
-	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -MD -MP -fPIC -DPIC -pthread -I$(ISHIKO_CPP_ERRORS_ROOT)/include -I$(ISHIKO_CPP_BASEPLATFORM_ROOT)/include -I$(ISHIKO_CPP_TEXT_ROOT)/include -I$(ISHIKO_CPP_NETWORKING_ROOT)/include -I$(ISHIKO_CPP_BOOST_ROOT)/include -I$(ISHIKO_CPP_FILESYSTEM_ROOT)/include -I$(ISHIKO_CPP_FMT_ROOT)/include -I$(ISHIKO_CPP_TIME_ROOT)/include -I$(ISHIKO_CPP_LOGGING_ROOT)/include -I$(NEMU_CPP_CORE_ROOT)/include -I$(ISHIKO_CPP_TYPES_ROOT)/include -I$(ISHIKO_CPP_HTTP_ROOT)/include -I$(NEMU_CPP_WEBFRAMEWORK_ROOT)/include -I$(MSTCH_ROOT)/include -I../../include/Nemu/MustacheTemplateEngine -std=c++11 ../../src/MustacheTemplateEngine.cpp
+$(_builddir)NemuMustacheTemplatesServer_main.o: ../../src/main.cpp
+	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -MD -MP -pthread -I$(ISHIKO_CPP_ERRORS_ROOT)/include -I$(ISHIKO_CPP_BASEPLATFORM_ROOT)/include -I$(ISHIKO_CPP_TEXT_ROOT)/include -I$(ISHIKO_CPP_NETWORKING_ROOT)/include -I$(ISHIKO_CPP_BOOST_ROOT)/include -I$(ISHIKO_CPP_FILESYSTEM_ROOT)/include -I$(ISHIKO_CPP_FMT_ROOT)/include -I$(ISHIKO_CPP_TIME_ROOT)/include -I$(ISHIKO_CPP_LOGGING_ROOT)/include -I$(NEMU_CPP_CORE_ROOT)/include -I$(ISHIKO_CPP_TYPES_ROOT)/include -I$(ISHIKO_CPP_HTTP_ROOT)/include -I$(NEMU_CPP_WEBFRAMEWORK_ROOT)/include -I$(MSTCH_ROOT)/include -I$(NEMU_CPP_MUSTACHETEMPLATEENGINE_ROOT)/include -std=c++11 ../../src/main.cpp
 
 clean:
 	rm -f $(_builddir)*.o
 	rm -f $(_builddir)*.d
-	rm -f ../bakefile/../../lib/lib$(if $(call _equal,$(config),Debug),NemuMustacheTemplateEngine-d,NemuMustacheTemplateEngine).a
+	rm -f ../../bin/NemuMustacheTemplatesServer
 
 .PHONY: all clean
 
