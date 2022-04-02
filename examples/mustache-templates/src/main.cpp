@@ -4,7 +4,8 @@
     See https://github.com/nemu-cpp/nemu/blob/main/LICENSE.txt
 */
 
-#include <Nemu.hpp>
+#include <Nemu/MustacheTemplateEngine.hpp>
+#include <Nemu/WebFramework.hpp>
 #include <iostream>
 
 int main(int argc, char* argv[])
@@ -12,8 +13,8 @@ int main(int argc, char* argv[])
     Ishiko::Error error;
 
     // TODO: use the async server
-    std::shared_ptr<Nemu::IshikoSingleConnectionServer> server =
-        std::make_shared<Nemu::IshikoSingleConnectionServer>(Ishiko::TCPServerSocket::AllInterfaces,
+    std::shared_ptr<Nemu::SingleConnectionWebServer> server =
+        std::make_shared<Nemu::SingleConnectionWebServer>(Ishiko::TCPServerSocket::AllInterfaces,
             Ishiko::Port::http, error);
 
     // Create a log that sends its output to the console.
