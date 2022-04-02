@@ -21,6 +21,9 @@ jobs:
       - run:
           name: Test
           command: cd /projects/nemu/cpp/mustache-template-engine/tests/build/gnumake && make && ./NemuMustacheTemplateEngineTests
+      - run:
+          name: Build MustacheTemplates example
+          command: cd /projects/nemu/cpp/mustache-template-engine/examples/mustache-templates/build/gnumake && make
 workflows:
   version: 2
   continuous_build:
