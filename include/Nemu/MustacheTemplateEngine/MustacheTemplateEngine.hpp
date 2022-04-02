@@ -8,7 +8,7 @@
 #define _NEMU_CPP_MUSTACHETEMPLATEENGINE_MUSTACHETEMPLATEENGINE_HPP_
 
 #include <boost/filesystem/path.hpp>
-#include <Nemu/Core.hpp>
+#include <Nemu/WebFramework.hpp>
 
 namespace Nemu
 {
