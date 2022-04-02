@@ -1,0 +1,29 @@
+nemupath = envvar("NEMU_CPP");
+import $(nemupath)/mustache-template-engine/include/Nemu/MustacheTemplateEngine.bkl;
+import $(nemupath)/web-framework/include/Nemu/WebFramework.bkl;
+
+toolsets = gnu vs2019 vs2017 vs2015 vs2013;
+
+gnu.makefile = ../gnumake/GNUmakefile;
+vs2019.solutionfile = ../vc16/NemuMustacheTemplatesServer.sln;
+vs2017.solutionfile = ../vc15/NemuMustacheTemplatesServer.sln;
+vs2015.solutionfile = ../vc14/NemuMustacheTemplatesServer.sln;
+vs2013.solutionfile = ../vc12/NemuMustacheTemplatesServer.sln;
+
+program NemuMustacheTemplatesServer : NemuMustacheTemplateEngine, NemuWebFramework
+{
+    archs = x86 x86_64;
+
+    if ($(toolset) == gnu)
+    {
+        cxx-compiler-options = "-std=c++11";
+        libs += NemuMustacheTemplateEngine NemuWebFramework NemuCore IshikoHTTP IshikoNetworking IshikoTime IshikoText IshikoTypes IshikoLogging IshikoErrors mstch fmt;
+    }
+
+    outputdir = ../../bin;
+
+    sources
+    {
+        ../../src/main.cpp
+    }
+}
