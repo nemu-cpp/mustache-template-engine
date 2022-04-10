@@ -1,5 +1,5 @@
 ishikopath = envvar("ISHIKO_CPP");
-import $(ishikopath)/test-framework/include/Ishiko/Tests.bkl;
+import $(ishikopath)/test-framework/include/Ishiko/TestFramework.bkl;
 nemupath = envvar("NEMU_CPP");
 import $(nemupath)/mustache-template-engine/include/Nemu/MustacheTemplateEngine.bkl;
 
@@ -11,14 +11,14 @@ vs2017.solutionfile = ../vc15/NemuMustacheTemplateEngineTests.sln;
 vs2015.solutionfile = ../vc14/NemuMustacheTemplateEngineTests.sln;
 vs2013.solutionfile = ../vc12/NemuMustacheTemplateEngineTests.sln;
 
-program NemuMustacheTemplateEngineTests : NemuMustacheTemplateEngine, IshikoTests
+program NemuMustacheTemplateEngineTests : NemuMustacheTemplateEngine, IshikoTestFramework
 {
     archs = x86 x86_64;
 
     if ($(toolset) == gnu)
     {
         cxx-compiler-options = "-std=c++11";
-        libs += NemuMustacheTemplateEngine IshikoTests IshikoTestsCore IshikoProcess mstch boost_filesystem;
+        libs += NemuMustacheTemplateEngine IshikoTestFramework IshikoTestFrameworkCore IshikoProcess mstch boost_filesystem;
     }
 
     headers

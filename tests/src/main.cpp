@@ -6,7 +6,7 @@
 
 #include "MustacheTemplateEngineTests.hpp"
 #include "Nemu/MustacheTemplateEngine/linkoptions.hpp"
-#include <Ishiko/Tests.hpp>
+#include <Ishiko/TestFramework.hpp>
 
 using namespace Ishiko;
 
