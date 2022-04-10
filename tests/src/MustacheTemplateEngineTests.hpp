@@ -8,7 +8,7 @@
 #ifndef _NEMU_CPP_MUSTACHETEMPLATEENGINE_TESTS_MUSTACHETEMPLATEENGINETESTS_HPP_
 #define _NEMU_CPP_MUSTACHETEMPLATEENGINE_TESTS_MUSTACHETEMPLATEENGINETESTS_HPP_
 
-#include <Ishiko/Tests.hpp>
+#include <Ishiko/TestFramework.hpp>
 
 class MustacheTemplateEngineTests : public Ishiko::TestSequence
 {
