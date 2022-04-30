@@ -9,6 +9,7 @@
 
 #include <boost/filesystem/path.hpp>
 #include <Nemu/WebFramework.hpp>
+#include <string>
 
 namespace Nemu
 {
@@ -16,12 +17,25 @@ namespace Nemu
 class MustacheTemplateEngine : public TemplateEngine
 {
 public:
-    MustacheTemplateEngine();
+    class Options
+    {
+    public:
+        // TODO: this can contain env variables that will be subsituted
+        // TODO: error if subsitution fails
+        Options(const std::string& templatesRootDirectory);
 
-    std::string render() const override;
+        const boost::filesystem::path& templatesRootDirectory() const;
+
+    private:
+        boost::filesystem::path m_templatesRootDirectory;
+    };
+
+    MustacheTemplateEngine(Options options);
+
+    std::string render(const std::string& view, ViewContext& context) override;
 
 private:
-    boost::filesystem::path m_templatesDirectory;
+    Options m_options;
 };
 
 }
