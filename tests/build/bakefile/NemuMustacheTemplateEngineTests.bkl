@@ -18,7 +18,7 @@ program NemuMustacheTemplateEngineTests : NemuMustacheTemplateEngine, IshikoTest
     if ($(toolset) == gnu)
     {
         cxx-compiler-options = "-std=c++11";
-        libs += NemuMustacheTemplateEngine IshikoTestFramework IshikoTestFrameworkCore IshikoDiff IshikoProcess IshikoErrors mstch boost_filesystem;
+        libs += NemuMustacheTemplateEngine IshikoTestFramework IshikoTestFrameworkCore IshikoDiff IshikoFileSystem IshikoProcess IshikoText IshikoErrors mstch boost_filesystem;
     }
 
     headers
