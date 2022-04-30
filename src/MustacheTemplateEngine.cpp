@@ -12,7 +12,6 @@
 using namespace Nemu;
 
 MustacheTemplateEngine::Options::Options(const std::string& templatesRootDirectory)
-    : m_defaults({"index.html"})
 {
     m_templatesRootDirectory = 
         Ishiko::CurrentEnvironment::ExpandVariablesInString(templatesRootDirectory,
