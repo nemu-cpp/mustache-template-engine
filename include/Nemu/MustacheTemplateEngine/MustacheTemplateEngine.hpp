@@ -9,6 +9,7 @@
 
 #include <boost/filesystem/path.hpp>
 #include <Nemu/WebFramework.hpp>
+#include <string>
 
 namespace Nemu
 {
@@ -18,7 +19,7 @@ class MustacheTemplateEngine : public TemplateEngine
 public:
     MustacheTemplateEngine();
 
-    std::string render() const override;
+    std::string render(const std::string& view, ViewContext& context) override;
 
 private:
     boost::filesystem::path m_templatesDirectory;

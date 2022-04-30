@@ -32,7 +32,9 @@ int main(int argc, char* argv[])
                 [](const Nemu::WebRequest& request, Nemu::WebResponseBuilder& response, void* handlerData,
                     Ishiko::Logger& logger)
                 {
-                    response.view("index");
+                    Nemu::ViewContext context;
+                    context["mustache"] = "Mustache";
+                    response.view("index", context);
                 })));
 
     app.run();
