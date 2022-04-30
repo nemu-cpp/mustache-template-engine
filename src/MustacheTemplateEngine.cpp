@@ -5,27 +5,43 @@
 */
 
 #include "MustacheTemplateEngine.hpp"
+#include <Ishiko/FileSystem.hpp>
+#include <Ishiko/Process.hpp>
 #include <mstch/mstch.hpp>
 
-namespace Nemu
-{
+using namespace Nemu;
 
-MustacheTemplateEngine::MustacheTemplateEngine()
+MustacheTemplateEngine::Options::Options(const std::string& templatesRootDirectory)
+{
+    m_templatesRootDirectory = 
+        Ishiko::CurrentEnvironment::ExpandVariablesInString(templatesRootDirectory,
+            Ishiko::CurrentEnvironment::SubstitutionFormat::DollarAndCurlyBrackets);
+}
+
+const boost::filesystem::path& MustacheTemplateEngine::Options::templatesRootDirectory() const
+{
+    return m_templatesRootDirectory;
+}
+
+MustacheTemplateEngine::MustacheTemplateEngine(Options options)
+    : m_options(std::move(options))
 {
 }
 
-std::string MustacheTemplateEngine::render() const
+std::string MustacheTemplateEngine::render(const std::string& view, ViewContext& context)
 {
-    std::string view{ "{{#names}}Hi {{name}}!\n{{/names}}" };
-    mstch::map context{
-      {"names", mstch::array{
-        mstch::map{{"name", std::string{"Chris"}}},
-        mstch::map{{"name", std::string{"Mark"}}},
-        mstch::map{{"name", std::string{"Scott"}}},
-      }}
-    };
+    // TODO: load view from disk
+    Ishiko::Error error;
+    // TODO: handle error
+    boost::filesystem::path templatePath = m_options.templatesRootDirectory() / view;
+    std::string viewTemplate = Ishiko::FileSystem::ReadFile(templatePath, error);
 
-    return mstch::render(view, context);
-}
+    // TODO: this is annoying I should modify mustache implementation to make this integration easier
+    mstch::map mustacheContext;
+    for (const std::pair<std::string, std::string>& item : context)
+    {
+        mustacheContext.emplace(item);
+    }
 
+    return mstch::render(viewTemplate, mustacheContext);
 }

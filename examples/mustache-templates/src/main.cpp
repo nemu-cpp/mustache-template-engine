@@ -22,17 +22,24 @@ int main(int argc, char* argv[])
     Nemu::WebApplication app(server, logger);
 
     // Set the mustache engine as the default template engine
-    app.views() = Nemu::Views(std::make_shared<Nemu::MustacheTemplateEngine>());
+    const std::string templatesRootDir = "${NEMU_CPP}/mustache-template-engine/examples/mustache-templates/data/views";
+    app.views().add(std::make_shared<Nemu::MustacheTemplateEngine>(templatesRootDir));
 
-    // TODO: I should take this path relative to the executable location
     // Add a single route that only handled the "/" path
     app.routes().append(
-        Nemu::Route("/",
+        Nemu::Route("/*",
             std::make_shared<Nemu::FunctionWebRequestHandler>(
                 [](const Nemu::WebRequest& request, Nemu::WebResponseBuilder& response, void* handlerData,
                     Ishiko::Logger& logger)
                 {
-                    response.view("index");
+                    Nemu::ViewContext context;
+                    context["mustache"] = "Mustache";
+                    std::string templatePath = request.url().path();
+                    if (templatePath == "/")
+                    {
+                        templatePath = "index.html";
+                    }
+                    response.view(templatePath, context);
                 })));
 
     app.run();
