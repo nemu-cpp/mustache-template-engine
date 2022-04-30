@@ -6,12 +6,26 @@
 
 #include "MustacheTemplateEngine.hpp"
 #include <Ishiko/FileSystem.hpp>
+#include <Ishiko/Process.hpp>
 #include <mstch/mstch.hpp>
 
-namespace Nemu
-{
+using namespace Nemu;
 
-MustacheTemplateEngine::MustacheTemplateEngine()
+MustacheTemplateEngine::Options::Options(const std::string& templatesRootDirectory)
+    : m_defaults({"index.html"})
+{
+    m_templatesRootDirectory = 
+        Ishiko::CurrentEnvironment::ExpandVariablesInString(templatesRootDirectory,
+            Ishiko::CurrentEnvironment::SubstitutionFormat::DollarAndCurlyBrackets);
+}
+
+const boost::filesystem::path& MustacheTemplateEngine::Options::templatesRootDirectory() const
+{
+    return m_templatesRootDirectory;
+}
+
+MustacheTemplateEngine::MustacheTemplateEngine(Options options)
+    : m_options(std::move(options))
 {
 }
 
@@ -20,7 +34,8 @@ std::string MustacheTemplateEngine::render(const std::string& view, ViewContext&
     // TODO: load view from disk
     Ishiko::Error error;
     // TODO: handle error
-    std::string viewTemplate = Ishiko::FileSystem::ReadFile("C:\\Data\\Projects\\nemu\\cpp\\mustache-template-engine\\examples\\mustache-templates\\data\\views\\index.html", error);
+    boost::filesystem::path templatePath = m_options.templatesRootDirectory() / view;
+    std::string viewTemplate = Ishiko::FileSystem::ReadFile(templatePath, error);
 
     // TODO: this is annoying I should modify mustache implementation to make this integration easier
     mstch::map mustacheContext;
@@ -29,7 +44,5 @@ std::string MustacheTemplateEngine::render(const std::string& view, ViewContext&
         mustacheContext.emplace(item);
     }
 
-    return mstch::render(view, mustacheContext);
-}
-
+    return mstch::render(viewTemplate, mustacheContext);
 }
