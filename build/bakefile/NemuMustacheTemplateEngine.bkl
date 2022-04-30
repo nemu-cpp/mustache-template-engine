@@ -1,4 +1,5 @@
 ishikopath = envvar("ISHIKO_CPP");
+import $(ishikopath)/process/include/Ishiko/Process.bkl;
 import $(ishikopath)/third-party-glue/include/Ishiko/ThirdParty/mstch.bkl;
 nemupath = envvar("NEMU_CPP");
 import $(nemupath)/web-framework/include/Nemu/WebFramework.bkl;
@@ -11,7 +12,7 @@ vs2017.solutionfile = ../vc15/NemuMustacheTemplateEngine.sln;
 vs2015.solutionfile = ../vc14/NemuMustacheTemplateEngine.sln;
 vs2013.solutionfile = ../vc12/NemuMustacheTemplateEngine.sln;
 
-library NemuMustacheTemplateEngine : NemuWebFramework, mstch
+library NemuMustacheTemplateEngine : NemuWebFramework, IshikoProcess, mstch
 {
     archs = x86 x86_64;
    
