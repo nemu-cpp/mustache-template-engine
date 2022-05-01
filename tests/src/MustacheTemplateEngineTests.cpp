@@ -17,7 +17,6 @@ MustacheTemplateEngineTests::MustacheTemplateEngineTests(const TestNumber& numbe
     append<HeapAllocationErrorsTest>("Creation test 1", ConstructorTest1);
     append<HeapAllocationErrorsTest>("render test 1", RenderTest1);
     append<HeapAllocationErrorsTest>("render test 2", RenderTest2);
-    append<HeapAllocationErrorsTest>("render test 3", RenderTest3);
 }
 
 void MustacheTemplateEngineTests::ConstructorTest1(Test& test)
