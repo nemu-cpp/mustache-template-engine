@@ -7,8 +7,7 @@
 #ifndef _NEMU_CPP_MUSTACHETEMPLATEENGINE_HPP_
 #define _NEMU_CPP_MUSTACHETEMPLATEENGINE_HPP_
 
-#include "MustacheTemplateEngine/MustacheTemplateEngine.hpp"
-
 #include "MustacheTemplateEngine/linkoptions.hpp"
+#include "MustacheTemplateEngine/MustacheTemplateEngine.hpp"
 
 #endif
