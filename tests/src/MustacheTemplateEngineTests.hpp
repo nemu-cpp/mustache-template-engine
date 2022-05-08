@@ -19,6 +19,9 @@ private:
     static void ConstructorTest1(Ishiko::Test& test);
     static void RenderTest1(Ishiko::Test& test);
     static void RenderTest2(Ishiko::Test& test);
+    static void RenderTest3(Ishiko::Test& test);
+    static void RenderWithLayoutTest1(Ishiko::Test& test);
+    static void RenderWithLayoutTest2(Ishiko::Test& test);
 };
 
 #endif
