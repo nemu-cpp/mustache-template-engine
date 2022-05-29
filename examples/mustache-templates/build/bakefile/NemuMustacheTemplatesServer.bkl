@@ -17,7 +17,7 @@ program NemuMustacheTemplatesServer : NemuMustacheTemplateEngine, NemuWebFramewo
     if ($(toolset) == gnu)
     {
         cxx-compiler-options = "-std=c++11";
-        libs += NemuMustacheTemplateEngine NemuWebFramework NemuCore IshikoHTTP IshikoNetworking IshikoFileSystem IshikoProcess IshikoTime IshikoText IshikoTypes IshikoLogging IshikoErrors mstch fmt boost_filesystem;
+        libs += NemuMustacheTemplateEngine NemuWebFramework NemuCore IshikoHTTP IshikoNetworking IshikoFileSystem IshikoProcess IshikoTime IshikoText IshikoTypes IshikoLogging IshikoMemory IshikoErrors mstch fmt boost_filesystem;
     }
 
     outputdir = ../../bin;
