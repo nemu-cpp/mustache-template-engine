@@ -157,9 +157,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\main.cpp" />
+    <ClCompile Include="..\..\src\MustacheTemplateEngineProfileTests.cpp" />
     <ClCompile Include="..\..\src\MustacheTemplateEngineTests.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\src\MustacheTemplateEngineProfileTests.hpp" />
     <ClInclude Include="..\..\src\MustacheTemplateEngineTests.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

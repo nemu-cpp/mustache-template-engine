@@ -23,12 +23,14 @@ program NemuMustacheTemplateEngineTests : NemuMustacheTemplateEngine, IshikoTest
 
     headers
     {
+        ../../src/MustacheTemplateEngineProfileTests.hpp
         ../../src/MustacheTemplateEngineTests.hpp
     }
 
     sources
     {
         ../../src/main.cpp
+        ../../src/MustacheTemplateEngineProfileTests.cpp
         ../../src/MustacheTemplateEngineTests.cpp
     }
 }
