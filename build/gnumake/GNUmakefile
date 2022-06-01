@@ -122,12 +122,15 @@ NEMU_CPP_WEBFRAMEWORK_ROOT ?= $(NEMU_CPP)/web-framework
 
 all: ../bakefile/../../lib/lib$(if $(call _equal,$(config),Debug),NemuMustacheTemplateEngine-d,NemuMustacheTemplateEngine).a
 
-../bakefile/../../lib/lib$(if $(call _equal,$(config),Debug),NemuMustacheTemplateEngine-d,NemuMustacheTemplateEngine).a: $(_builddir)NemuMustacheTemplateEngine_MustacheTemplateEngine.o
-	$(AR) rc $@ $(_builddir)NemuMustacheTemplateEngine_MustacheTemplateEngine.o
+../bakefile/../../lib/lib$(if $(call _equal,$(config),Debug),NemuMustacheTemplateEngine-d,NemuMustacheTemplateEngine).a: $(_builddir)NemuMustacheTemplateEngine_MustacheTemplateEngine.o $(_builddir)NemuMustacheTemplateEngine_MustacheTemplateEngineProfile.o
+	$(AR) rc $@ $(_builddir)NemuMustacheTemplateEngine_MustacheTemplateEngine.o $(_builddir)NemuMustacheTemplateEngine_MustacheTemplateEngineProfile.o
 	$(RANLIB) $@
 
 $(_builddir)NemuMustacheTemplateEngine_MustacheTemplateEngine.o: ../../src/MustacheTemplateEngine.cpp
 	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -MD -MP -fPIC -DPIC -pthread -I$(ISHIKO_CPP_ERRORS_ROOT)/include -I$(ISHIKO_CPP_BASEPLATFORM_ROOT)/include -I$(ISHIKO_CPP_BOOST_ROOT)/include -I$(ISHIKO_CPP_TEXT_ROOT)/include -I$(ISHIKO_CPP_MEMORY_ROOT)/include -I$(ISHIKO_CPP_BOTAN_ROOT)/include/botan-2 -I$(ISHIKO_CPP_NETWORKING_ROOT)/include -I$(ISHIKO_CPP_FILESYSTEM_ROOT)/include -I$(ISHIKO_CPP_FMT_ROOT)/include -I$(ISHIKO_CPP_TIME_ROOT)/include -I$(ISHIKO_CPP_LOGGING_ROOT)/include -I$(NEMU_CPP_CORE_ROOT)/include -I$(ISHIKO_CPP_TYPES_ROOT)/include -I$(ISHIKO_CPP_HTTP_ROOT)/include -I$(ISHIKO_CPP_CONFIGURATION_ROOT)/include -I$(NEMU_CPP_WEBFRAMEWORK_ROOT)/include -I$(ISHIKO_CPP_PROCESS_ROOT)/include -I$(MSTCH_ROOT)/include -I../../include/Nemu/MustacheTemplateEngine -std=c++11 ../../src/MustacheTemplateEngine.cpp
+
+$(_builddir)NemuMustacheTemplateEngine_MustacheTemplateEngineProfile.o: ../../src/MustacheTemplateEngineProfile.cpp
+	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -MD -MP -fPIC -DPIC -pthread -I$(ISHIKO_CPP_ERRORS_ROOT)/include -I$(ISHIKO_CPP_BASEPLATFORM_ROOT)/include -I$(ISHIKO_CPP_BOOST_ROOT)/include -I$(ISHIKO_CPP_TEXT_ROOT)/include -I$(ISHIKO_CPP_MEMORY_ROOT)/include -I$(ISHIKO_CPP_BOTAN_ROOT)/include/botan-2 -I$(ISHIKO_CPP_NETWORKING_ROOT)/include -I$(ISHIKO_CPP_FILESYSTEM_ROOT)/include -I$(ISHIKO_CPP_FMT_ROOT)/include -I$(ISHIKO_CPP_TIME_ROOT)/include -I$(ISHIKO_CPP_LOGGING_ROOT)/include -I$(NEMU_CPP_CORE_ROOT)/include -I$(ISHIKO_CPP_TYPES_ROOT)/include -I$(ISHIKO_CPP_HTTP_ROOT)/include -I$(ISHIKO_CPP_CONFIGURATION_ROOT)/include -I$(NEMU_CPP_WEBFRAMEWORK_ROOT)/include -I$(ISHIKO_CPP_PROCESS_ROOT)/include -I$(MSTCH_ROOT)/include -I../../include/Nemu/MustacheTemplateEngine -std=c++11 ../../src/MustacheTemplateEngineProfile.cpp
 
 clean:
 	rm -f $(_builddir)*.o
