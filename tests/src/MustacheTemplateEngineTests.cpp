@@ -6,7 +6,9 @@
 
 #include "MustacheTemplateEngineTests.hpp"
 #include "Nemu/MustacheTemplateEngine/MustacheTemplateEngine.hpp"
-#include <Ishiko/FileSystem.hpp>
+#include "Nemu/MustacheTemplateEngine/MustacheTemplateEngineProfile.hpp"
+#include <Ishiko/Configuration.hpp>
+#include <memory>
 
 using namespace Ishiko;
 using namespace Nemu;
@@ -14,125 +16,47 @@ using namespace Nemu;
 MustacheTemplateEngineTests::MustacheTemplateEngineTests(const TestNumber& number, const TestContext& context)
     : TestSequence(number, "MustacheTemplateEngine tests", context)
 {
-    append<HeapAllocationErrorsTest>("Creation test 1", ConstructorTest1);
-    append<HeapAllocationErrorsTest>("render test 1", RenderTest1);
-    append<HeapAllocationErrorsTest>("render test 2", RenderTest2);
-    append<HeapAllocationErrorsTest>("render test 3", RenderTest3);
-    append<HeapAllocationErrorsTest>("render with layout test 1", RenderWithLayoutTest1);
-    append<HeapAllocationErrorsTest>("render with layout test 2", RenderWithLayoutTest2);
+    append<HeapAllocationErrorsTest>("Constructor test 1", ConstructorTest1);
+    append<HeapAllocationErrorsTest>("createProfile test 1", CreateProfileTest1);
+    append<HeapAllocationErrorsTest>("createProfile test 2", CreateProfileTest2);
 }
 
 void MustacheTemplateEngineTests::ConstructorTest1(Test& test)
 {
-    MustacheTemplateEngine templatingEngine(MustacheTemplateEngine::Options("."));
+    MustacheTemplateEngine templateEngine;
 
     ISHIKO_TEST_PASS();
 }
 
-void MustacheTemplateEngineTests::RenderTest1(Test& test)
+void MustacheTemplateEngineTests::CreateProfileTest1(Test& test)
 {
-    boost::filesystem::path templateRootDir = test.context().getTestDataPath("templates");
-    MustacheTemplateEngine templatingEngine(MustacheTemplateEngine::Options(templateRootDir.string()));
+    MustacheTemplateEngine templateEngine;
 
-    ViewContext context;
-    std::string renderedView = templatingEngine.render("MustacheTemplateEngineTests_RenderTest1.html", context);
+    Ishiko::Configuration configuration;
+    configuration.set("templates-root-directory", "templatesRootDir");
+    std::shared_ptr<TemplateEngineProfile> templateEngineProfile = templateEngine.createProfile(configuration);
 
-    boost::filesystem::path outputPath =
-        test.context().getTestOutputPath("MustacheTemplateEngineTests_RenderTest1.html");
-    Error error; // TODO: use exception
-    BinaryFile outputFile = BinaryFile::Create(outputPath, error);
-    outputFile.write(renderedView.c_str(), renderedView.size());
-    outputFile.close();
+    const MustacheTemplateEngineProfile& mustacheTemplateEngineProfile =
+        static_cast<MustacheTemplateEngineProfile&>(*templateEngineProfile);
 
-    ISHIKO_TEST_FAIL_IF_FILES_NEQ("MustacheTemplateEngineTests_RenderTest1.html",
-        "MustacheTemplateEngineTests_RenderTest1.html");
+    ISHIKO_TEST_FAIL_IF_NEQ(mustacheTemplateEngineProfile.options().templatesRootDirectory(), "templatesRootDir");
+    ISHIKO_TEST_FAIL_IF(mustacheTemplateEngineProfile.options().layoutsRootDirectory().has_value());
     ISHIKO_TEST_PASS();
 }
 
-void MustacheTemplateEngineTests::RenderTest2(Test& test)
+void MustacheTemplateEngineTests::CreateProfileTest2(Test& test)
 {
-    boost::filesystem::path templateRootDir = test.context().getTestDataPath("templates");
-    MustacheTemplateEngine templatingEngine(MustacheTemplateEngine::Options(templateRootDir.string()));
+    MustacheTemplateEngine templateEngine;
 
-    ViewContext context;
-    context["name"] = "John";
-    std::string renderedView = templatingEngine.render("MustacheTemplateEngineTests_RenderTest2.html", context);
+    Ishiko::Configuration configuration;
+    configuration.set("templates-root-directory", "templatesRootDir");
+    configuration.set("layouts-root-directory", "layoutsRootDir");
+    std::shared_ptr<TemplateEngineProfile> templateEngineProfile = templateEngine.createProfile(configuration);
 
-    boost::filesystem::path outputPath =
-        test.context().getTestOutputPath("MustacheTemplateEngineTests_RenderTest2.html");
-    Error error; // TODO: use exception
-    BinaryFile outputFile = BinaryFile::Create(outputPath, error);
-    outputFile.write(renderedView.c_str(), renderedView.size());
-    outputFile.close();
+    const MustacheTemplateEngineProfile& mustacheTemplateEngineProfile =
+        static_cast<MustacheTemplateEngineProfile&>(*templateEngineProfile);
 
-    ISHIKO_TEST_FAIL_IF_FILES_NEQ("MustacheTemplateEngineTests_RenderTest2.html",
-        "MustacheTemplateEngineTests_RenderTest2.html");
-    ISHIKO_TEST_PASS();
-}
-
-void MustacheTemplateEngineTests::RenderTest3(Test& test)
-{
-    boost::filesystem::path templateRootDir = test.context().getTestDataPath("templates");
-    MustacheTemplateEngine templatingEngine(MustacheTemplateEngine::Options(templateRootDir.string()));
-
-    ViewContext context;
-    context["name"] = "<John>";
-    std::string renderedView = templatingEngine.render("MustacheTemplateEngineTests_RenderTest2.html", context);
-
-    boost::filesystem::path outputPath =
-        test.context().getTestOutputPath("MustacheTemplateEngineTests_RenderTest3.html");
-    Error error; // TODO: use exception
-    BinaryFile outputFile = BinaryFile::Create(outputPath, error);
-    outputFile.write(renderedView.c_str(), renderedView.size());
-    outputFile.close();
-
-    ISHIKO_TEST_FAIL_IF_FILES_NEQ("MustacheTemplateEngineTests_RenderTest3.html",
-        "MustacheTemplateEngineTests_RenderTest3.html");
-    ISHIKO_TEST_PASS();
-}
-
-void MustacheTemplateEngineTests::RenderWithLayoutTest1(Test& test)
-{
-    boost::filesystem::path templateRootDir = test.context().getTestDataPath("templates");
-    boost::filesystem::path layoutRootDir = test.context().getTestDataPath("layouts");
-    MustacheTemplateEngine templatingEngine(
-        MustacheTemplateEngine::Options(templateRootDir.string(), layoutRootDir.string()));
-
-    ViewContext context;
-    context["name"] = "John";
-    std::string renderedView = templatingEngine.render("MustacheTemplateEngineTests_RenderWithLayoutTest1.html", context, "MustacheTemplateEngineTests_RenderWithLayoutTest1.html");
-
-    boost::filesystem::path outputPath =
-        test.context().getTestOutputPath("MustacheTemplateEngineTests_RenderWithLayoutTest1.html");
-    Error error; // TODO: use exception
-    BinaryFile outputFile = BinaryFile::Create(outputPath, error);
-    outputFile.write(renderedView.c_str(), renderedView.size());
-    outputFile.close();
-
-    ISHIKO_TEST_FAIL_IF_FILES_NEQ("MustacheTemplateEngineTests_RenderWithLayoutTest1.html",
-        "MustacheTemplateEngineTests_RenderWithLayoutTest1.html");
-    ISHIKO_TEST_PASS();
-}
-
-void MustacheTemplateEngineTests::RenderWithLayoutTest2(Test& test)
-{
-    boost::filesystem::path templateRootDir = test.context().getTestDataPath("templates");
-    boost::filesystem::path layoutRootDir = test.context().getTestDataPath("layouts");
-    MustacheTemplateEngine templatingEngine(
-        MustacheTemplateEngine::Options(templateRootDir.string(), layoutRootDir.string()));
-
-    ViewContext context;
-    context["name"] = "<John>";
-    std::string renderedView = templatingEngine.render("MustacheTemplateEngineTests_RenderWithLayoutTest1.html", context, "MustacheTemplateEngineTests_RenderWithLayoutTest1.html");
-
-    boost::filesystem::path outputPath =
-        test.context().getTestOutputPath("MustacheTemplateEngineTests_RenderWithLayoutTest2.html");
-    Error error; // TODO: use exception
-    BinaryFile outputFile = BinaryFile::Create(outputPath, error);
-    outputFile.write(renderedView.c_str(), renderedView.size());
-    outputFile.close();
-
-    ISHIKO_TEST_FAIL_IF_FILES_NEQ("MustacheTemplateEngineTests_RenderWithLayoutTest2.html",
-        "MustacheTemplateEngineTests_RenderWithLayoutTest2.html");
+    ISHIKO_TEST_FAIL_IF_NEQ(mustacheTemplateEngineProfile.options().templatesRootDirectory(), "templatesRootDir");
+    ISHIKO_TEST_FAIL_IF_NEQ(*mustacheTemplateEngineProfile.options().layoutsRootDirectory(), "layoutsRootDir");
     ISHIKO_TEST_PASS();
 }
