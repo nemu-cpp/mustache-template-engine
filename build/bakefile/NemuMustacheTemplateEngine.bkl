@@ -38,11 +38,13 @@ library NemuMustacheTemplateEngine : NemuWebFramework, IshikoProcess, mstch
     {
         ../../include/Nemu/MustacheTemplateEngine.hpp
         ../../include/Nemu/MustacheTemplateEngine/MustacheTemplateEngine.hpp
+        ../../include/Nemu/MustacheTemplateEngine/MustacheTemplateEngineProfile.hpp
         ../../include/Nemu/MustacheTemplateEngine/linkoptions.hpp
     }
 
     sources
     {
         ../../src/MustacheTemplateEngine.cpp
+        ../../src/MustacheTemplateEngineProfile.cpp
     }
 }

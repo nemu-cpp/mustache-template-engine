@@ -9,5 +9,6 @@
 
 #include "MustacheTemplateEngine/linkoptions.hpp"
 #include "MustacheTemplateEngine/MustacheTemplateEngine.hpp"
+#include "MustacheTemplateEngine/MustacheTemplateEngineProfile.hpp"
 
 #endif

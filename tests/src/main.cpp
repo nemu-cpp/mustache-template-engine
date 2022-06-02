@@ -4,6 +4,7 @@
     See https://github.com/nemu-cpp/mustache-template-engine/blob/main/LICENSE.txt
 */
 
+#include "MustacheTemplateEngineProfileTests.hpp"
 #include "MustacheTemplateEngineTests.hpp"
 #include "Nemu/MustacheTemplateEngine/linkoptions.hpp"
 #include <Ishiko/TestFramework.hpp>
@@ -19,6 +20,7 @@ int main(int argc, char* argv[])
     theTestHarness.context().setReferenceDataDirectory("../../reference");
 
     TestSequence& theTests = theTestHarness.tests();
+    theTests.append<MustacheTemplateEngineProfileTests>();
     theTests.append<MustacheTemplateEngineTests>();
 
     return theTestHarness.run();

@@ -21,12 +21,12 @@ int main(int argc, char* argv[])
 
     Nemu::WebApplication app(server, logger);
 
-    // Set the mustache engine as the default template engine
+    // Set the mustache engine with the following options as the default template engine profile
     const std::string templatesRootDir = "${NEMU_CPP}/mustache-template-engine/examples/mustache-templates/data/views";
-    app.views().add(std::make_shared<Nemu::MustacheTemplateEngine>(templatesRootDir));
+    app.views().setDefaultProfile(std::make_shared<Nemu::MustacheTemplateEngineProfile>(templatesRootDir));
 
     // Add a single route that only handled the "/" path
-    app.routes().append(
+    app.routes().add(
         Nemu::Route("/*",
             std::make_shared<Nemu::FunctionWebRequestHandler>(
                 [](const Nemu::WebRequest& request, Nemu::WebResponseBuilder& response, void* handlerData,
