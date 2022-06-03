@@ -58,7 +58,7 @@ std::string MustacheTemplateEngineProfile::render(const std::string& view, ViewC
 
     // TODO: this is annoying I should modify mustache implementation to make this integration easier
     mstch::map mustacheContext;
-    for (const std::pair<std::string, std::string>& item : context)
+    for (const std::pair<std::string, std::string>& item : context.map())
     {
         mustacheContext.emplace(item);
     }
