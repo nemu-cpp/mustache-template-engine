@@ -9,6 +9,7 @@
 #include <boost/filesystem.hpp>
 #include <Ishiko/Errors.hpp>
 #include <Ishiko/FileSystem.hpp>
+#include <Nemu/WebFramework/MapViewContext.hpp>
 #include <string>
 
 using namespace Ishiko;
@@ -39,7 +40,7 @@ void MustacheTemplateEngineProfileTests::RenderTest1(Test& test)
     MustacheTemplateEngineProfile templateEngineProfile(
         MustacheTemplateEngineProfile::Options(templateRootDir.string()));
 
-    ViewContext context;
+    MapViewContext context;
     std::string renderedView =
         templateEngineProfile.render("MustacheTemplateEngineProfileTests_RenderTest1.html", context, nullptr);
 
@@ -61,8 +62,8 @@ void MustacheTemplateEngineProfileTests::RenderTest2(Test& test)
     MustacheTemplateEngineProfile templateEngineProfile(
         MustacheTemplateEngineProfile::Options(templateRootDir.string()));
 
-    ViewContext context;
-    context["name"] = "John";
+    MapViewContext context;
+    context.map()["name"] = "John";
     std::string renderedView =
         templateEngineProfile.render("MustacheTemplateEngineProfileTests_RenderTest2.html", context, nullptr);
 
@@ -84,8 +85,8 @@ void MustacheTemplateEngineProfileTests::RenderTest3(Test& test)
     MustacheTemplateEngineProfile templateEngineProfile(
         MustacheTemplateEngineProfile::Options(templateRootDir.string()));
 
-    ViewContext context;
-    context["name"] = "<John>";
+    MapViewContext context;
+    context.map()["name"] = "<John>";
     std::string renderedView =
         templateEngineProfile.render("MustacheTemplateEngineProfileTests_RenderTest2.html", context, nullptr);
 
@@ -108,8 +109,8 @@ void MustacheTemplateEngineProfileTests::RenderWithLayoutTest1(Test& test)
     MustacheTemplateEngineProfile templateEngineProfile(
         MustacheTemplateEngineProfile::Options(templateRootDir.string(), &layoutRootDir.string()));
 
-    ViewContext context;
-    context["name"] = "John";
+    MapViewContext context;
+    context.map()["name"] = "John";
     const std::string layout = "MustacheTemplateEngineProfileTests_RenderWithLayoutTest1.html";
     std::string renderedView =
         templateEngineProfile.render("MustacheTemplateEngineProfileTests_RenderWithLayoutTest1.html", context,
@@ -134,8 +135,8 @@ void MustacheTemplateEngineProfileTests::RenderWithLayoutTest2(Test& test)
     MustacheTemplateEngineProfile templateEngineProfile(
         MustacheTemplateEngineProfile::Options(templateRootDir.string(), &layoutRootDir.string()));
 
-    ViewContext context;
-    context["name"] = "<John>";
+    MapViewContext context;
+    context.map()["name"] = "<John>";
     const std::string layout = "MustacheTemplateEngineProfileTests_RenderWithLayoutTest1.html";
     std::string renderedView =
         templateEngineProfile.render("MustacheTemplateEngineProfileTests_RenderWithLayoutTest1.html", context,
