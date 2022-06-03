@@ -36,8 +36,7 @@ public:
 
     MustacheTemplateEngineProfile(Options options);
 
-    std::string render(const std::string& view, ViewContext& context) override;
-    std::string render(const std::string& view, ViewContext& context, const std::string& layout) override;
+    std::string render(const std::string& view, ViewContext& context, const std::string* layout) override;
 
     const Options& options() const noexcept;
 
