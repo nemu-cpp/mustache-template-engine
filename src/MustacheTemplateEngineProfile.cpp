@@ -47,36 +47,14 @@ MustacheTemplateEngineProfile::MustacheTemplateEngineProfile(Options options)
 {
 }
 
-std::string MustacheTemplateEngineProfile::render(const std::string& view, ViewContext& context)
-{
-    // TODO: load view from disk
-    Ishiko::Error error;
-    // TODO: handle error
-    boost::filesystem::path templatePath = m_options.templatesRootDirectory() / view;
-    std::string viewTemplate = Ishiko::FileSystem::ReadFile(templatePath, error);
-
-    // TODO: this is annoying I should modify mustache implementation to make this integration easier
-    mstch::map mustacheContext;
-    for (const std::pair<std::string, std::string>& item : context)
-    {
-        mustacheContext.emplace(item);
-    }
-
-    return mstch::render(viewTemplate, mustacheContext);
-}
-
 std::string MustacheTemplateEngineProfile::render(const std::string& view, ViewContext& context,
-    const std::string& layout)
+    const std::string* layout)
 {
     // TODO: load view from disk
     Ishiko::Error error;
     // TODO: handle error
     boost::filesystem::path templatePath = m_options.templatesRootDirectory() / view;
     std::string viewTemplate = Ishiko::FileSystem::ReadFile(templatePath, error);
-
-    // TODO: handle error and case where layotuRootDir is null
-    boost::filesystem::path layoutPath = *m_options.layoutsRootDirectory() / layout;
-    std::string viewLayout = Ishiko::FileSystem::ReadFile(layoutPath, error);
 
     // TODO: this is annoying I should modify mustache implementation to make this integration easier
     mstch::map mustacheContext;
@@ -85,7 +63,18 @@ std::string MustacheTemplateEngineProfile::render(const std::string& view, ViewC
         mustacheContext.emplace(item);
     }
 
-    return mstch::render(viewLayout, mustacheContext, { {"content", viewTemplate} });
+    if (!layout)
+    {
+        return mstch::render(viewTemplate, mustacheContext);
+    }
+    else
+    {
+        // TODO: handle error and case where layotuRootDir is null
+        boost::filesystem::path layoutPath = *m_options.layoutsRootDirectory() / *layout;
+        std::string viewLayout = Ishiko::FileSystem::ReadFile(layoutPath, error);
+
+        return mstch::render(viewLayout, mustacheContext, { {"content", viewTemplate} });
+    }
 }
 
 const MustacheTemplateEngineProfile::Options& MustacheTemplateEngineProfile::options() const noexcept
