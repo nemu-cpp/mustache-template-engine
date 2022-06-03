@@ -32,8 +32,8 @@ int main(int argc, char* argv[])
                 [](const Nemu::WebRequest& request, Nemu::WebResponseBuilder& response, void* handlerData,
                     Ishiko::Logger& logger)
                 {
-                    Nemu::ViewContext context;
-                    context["mustache"] = "Mustache";
+                    Nemu::MapViewContext context;
+                    context.map()["mustache"] = "Mustache";
                     std::string templatePath = request.url().path();
                     if (templatePath == "/")
                     {
