@@ -6,7 +6,10 @@
 
 #include "MustacheTemplateEngineProfileTests.hpp"
 #include "Nemu/MustacheTemplateEngine/MustacheTemplateEngineProfile.hpp"
+#include <boost/filesystem.hpp>
+#include <Ishiko/Errors.hpp>
 #include <Ishiko/FileSystem.hpp>
+#include <string>
 
 using namespace Ishiko;
 using namespace Nemu;
@@ -38,7 +41,7 @@ void MustacheTemplateEngineProfileTests::RenderTest1(Test& test)
 
     ViewContext context;
     std::string renderedView =
-        templateEngineProfile.render("MustacheTemplateEngineProfileTests_RenderTest1.html", context);
+        templateEngineProfile.render("MustacheTemplateEngineProfileTests_RenderTest1.html", context, nullptr);
 
     boost::filesystem::path outputPath =
         test.context().getTestOutputPath("MustacheTemplateEngineProfileTests_RenderTest1.html");
@@ -61,7 +64,7 @@ void MustacheTemplateEngineProfileTests::RenderTest2(Test& test)
     ViewContext context;
     context["name"] = "John";
     std::string renderedView =
-        templateEngineProfile.render("MustacheTemplateEngineProfileTests_RenderTest2.html", context);
+        templateEngineProfile.render("MustacheTemplateEngineProfileTests_RenderTest2.html", context, nullptr);
 
     boost::filesystem::path outputPath =
         test.context().getTestOutputPath("MustacheTemplateEngineProfileTests_RenderTest2.html");
@@ -84,7 +87,7 @@ void MustacheTemplateEngineProfileTests::RenderTest3(Test& test)
     ViewContext context;
     context["name"] = "<John>";
     std::string renderedView =
-        templateEngineProfile.render("MustacheTemplateEngineProfileTests_RenderTest2.html", context);
+        templateEngineProfile.render("MustacheTemplateEngineProfileTests_RenderTest2.html", context, nullptr);
 
     boost::filesystem::path outputPath =
         test.context().getTestOutputPath("MustacheTemplateEngineProfileTests_RenderTest3.html");
@@ -107,9 +110,10 @@ void MustacheTemplateEngineProfileTests::RenderWithLayoutTest1(Test& test)
 
     ViewContext context;
     context["name"] = "John";
+    const std::string layout = "MustacheTemplateEngineProfileTests_RenderWithLayoutTest1.html";
     std::string renderedView =
         templateEngineProfile.render("MustacheTemplateEngineProfileTests_RenderWithLayoutTest1.html", context,
-            "MustacheTemplateEngineProfileTests_RenderWithLayoutTest1.html");
+            &layout);
 
     boost::filesystem::path outputPath =
         test.context().getTestOutputPath("MustacheTemplateEngineProfileTests_RenderWithLayoutTest1.html");
@@ -132,9 +136,10 @@ void MustacheTemplateEngineProfileTests::RenderWithLayoutTest2(Test& test)
 
     ViewContext context;
     context["name"] = "<John>";
+    const std::string layout = "MustacheTemplateEngineProfileTests_RenderWithLayoutTest1.html";
     std::string renderedView =
         templateEngineProfile.render("MustacheTemplateEngineProfileTests_RenderWithLayoutTest1.html", context,
-            "MustacheTemplateEngineProfileTests_RenderWithLayoutTest1.html");
+            &layout);
 
     boost::filesystem::path outputPath =
         test.context().getTestOutputPath("MustacheTemplateEngineProfileTests_RenderWithLayoutTest2.html");
