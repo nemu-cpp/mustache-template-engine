@@ -58,9 +58,29 @@ std::string MustacheTemplateEngineProfile::render(const std::string& view, ViewC
 
     // TODO: this is annoying I should modify mustache implementation to make this integration easier
     mstch::map mustacheContext;
-    for (const std::pair<std::string, std::string>& item : context.map())
+    for (const std::pair<std::string, ViewContext::Value>& item : context.toMap())
     {
-        mustacheContext.emplace(item);
+        switch (item.second.type())
+        {
+        case ViewContext::Value::Type::string:
+            mustacheContext.emplace(item.first, item.second.asString());
+            break;
+
+        case ViewContext::Value::Type::stringArray:
+            {
+                mstch::array items;
+                for (const std::string& str : item.second.asStringArray())
+                {
+                    items.push_back(mstch::map{ { "item", str } });
+                }
+                mustacheContext.emplace(item.first, std::move(items));
+            }
+            break;
+
+        default:
+            // TODO error
+            break;
+        }
     }
 
     if (!layout)

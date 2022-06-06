@@ -23,6 +23,7 @@ MustacheTemplateEngineProfileTests::MustacheTemplateEngineProfileTests(const Tes
     append<HeapAllocationErrorsTest>("render test 1", RenderTest1);
     append<HeapAllocationErrorsTest>("render test 2", RenderTest2);
     append<HeapAllocationErrorsTest>("render test 3", RenderTest3);
+    append<HeapAllocationErrorsTest>("render test 4", RenderTest4);
     append<HeapAllocationErrorsTest>("render with layout test 1", RenderWithLayoutTest1);
     append<HeapAllocationErrorsTest>("render with layout test 2", RenderWithLayoutTest2);
 }
@@ -99,6 +100,29 @@ void MustacheTemplateEngineProfileTests::RenderTest3(Test& test)
 
     ISHIKO_TEST_FAIL_IF_FILES_NEQ("MustacheTemplateEngineProfileTests_RenderTest3.html",
         "MustacheTemplateEngineProfileTests_RenderTest3.html");
+    ISHIKO_TEST_PASS();
+}
+
+void MustacheTemplateEngineProfileTests::RenderTest4(Test& test)
+{
+    boost::filesystem::path templateRootDir = test.context().getTestDataPath("templates");
+    MustacheTemplateEngineProfile templateEngineProfile(
+        MustacheTemplateEngineProfile::Options(templateRootDir.string()));
+
+    MapViewContext context;
+    context.map()["names"] = std::vector<std::string>({ "John", "Paul" });
+    std::string renderedView =
+        templateEngineProfile.render("MustacheTemplateEngineProfileTests_RenderTest4.html", context, nullptr);
+
+    boost::filesystem::path outputPath =
+        test.context().getTestOutputPath("MustacheTemplateEngineProfileTests_RenderTest4.html");
+    Error error; // TODO: use exception
+    BinaryFile outputFile = BinaryFile::Create(outputPath, error);
+    outputFile.write(renderedView.c_str(), renderedView.size());
+    outputFile.close();
+
+    ISHIKO_TEST_FAIL_IF_FILES_NEQ("MustacheTemplateEngineProfileTests_RenderTest4.html",
+        "MustacheTemplateEngineProfileTests_RenderTest4.html");
     ISHIKO_TEST_PASS();
 }
 
