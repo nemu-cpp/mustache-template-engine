@@ -10,7 +10,9 @@
 #include <Ishiko/Errors.hpp>
 #include <Ishiko/FileSystem.hpp>
 #include <Nemu/WebFramework/MapViewContext.hpp>
+#include <map>
 #include <string>
+#include <vector>
 
 using namespace Ishiko;
 using namespace Nemu;
@@ -24,6 +26,10 @@ MustacheTemplateEngineProfileTests::MustacheTemplateEngineProfileTests(const Tes
     append<HeapAllocationErrorsTest>("render test 2", RenderTest2);
     append<HeapAllocationErrorsTest>("render test 3", RenderTest3);
     append<HeapAllocationErrorsTest>("render test 4", RenderTest4);
+    append<HeapAllocationErrorsTest>("render test 5", RenderTest5);
+    append<HeapAllocationErrorsTest>("render test 6", RenderTest6);
+    append<HeapAllocationErrorsTest>("render test 7", RenderTest7);
+    append<HeapAllocationErrorsTest>("render test 8", RenderTest8);
     append<HeapAllocationErrorsTest>("render with layout test 1", RenderWithLayoutTest1);
     append<HeapAllocationErrorsTest>("render with layout test 2", RenderWithLayoutTest2);
 }
@@ -109,8 +115,10 @@ void MustacheTemplateEngineProfileTests::RenderTest4(Test& test)
     MustacheTemplateEngineProfile templateEngineProfile(
         MustacheTemplateEngineProfile::Options(templateRootDir.string()));
 
+    // Create a context where a "person" object is composed of 2 member objects: "name" and "country".
     MapViewContext context;
-    context.map()["names"] = std::vector<std::string>({ "John", "Paul" });
+    context.map()["person"] =
+        std::map<std::string, ViewContext::Value>({ { "name", "Paul" }, { "country", "Belgium" } });
     std::string renderedView =
         templateEngineProfile.render("MustacheTemplateEngineProfileTests_RenderTest4.html", context, nullptr);
 
@@ -123,6 +131,116 @@ void MustacheTemplateEngineProfileTests::RenderTest4(Test& test)
 
     ISHIKO_TEST_FAIL_IF_FILES_NEQ("MustacheTemplateEngineProfileTests_RenderTest4.html",
         "MustacheTemplateEngineProfileTests_RenderTest4.html");
+    ISHIKO_TEST_PASS();
+}
+
+void MustacheTemplateEngineProfileTests::RenderTest5(Test& test)
+{
+    boost::filesystem::path templateRootDir = test.context().getTestDataPath("templates");
+    MustacheTemplateEngineProfile templateEngineProfile(
+        MustacheTemplateEngineProfile::Options(templateRootDir.string()));
+
+    // Create a context where a "person" object is composed of 2 member objects: "name" and "country".
+    // In addition to that "name" itself is composed of 2 member objects: "first-name" and "last-name".
+    MapViewContext context;
+    ViewContext::Value name =
+        std::map<std::string, ViewContext::Value>({ {"first-name", "John"}, {"last-name", "Doe"} });
+    context.map()["person"] =
+        std::map<std::string, ViewContext::Value>({ { "name", name }, { "country", "Belgium" } });
+    std::string renderedView =
+        templateEngineProfile.render("MustacheTemplateEngineProfileTests_RenderTest5.html", context, nullptr);
+
+    boost::filesystem::path outputPath =
+        test.context().getTestOutputPath("MustacheTemplateEngineProfileTests_RenderTest5.html");
+    Error error; // TODO: use exception
+    BinaryFile outputFile = BinaryFile::Create(outputPath, error);
+    outputFile.write(renderedView.c_str(), renderedView.size());
+    outputFile.close();
+
+    ISHIKO_TEST_FAIL_IF_FILES_NEQ("MustacheTemplateEngineProfileTests_RenderTest5.html",
+        "MustacheTemplateEngineProfileTests_RenderTest5.html");
+    ISHIKO_TEST_PASS();
+}
+
+void MustacheTemplateEngineProfileTests::RenderTest6(Test& test)
+{
+    boost::filesystem::path templateRootDir = test.context().getTestDataPath("templates");
+    MustacheTemplateEngineProfile templateEngineProfile(
+        MustacheTemplateEngineProfile::Options(templateRootDir.string()));
+
+    // Create a context where the "names" object is an array of strings.
+    MapViewContext context;
+    context.map()["names"] = std::vector<ViewContext::Value>({ "John", "Paul" });
+    std::string renderedView =
+        templateEngineProfile.render("MustacheTemplateEngineProfileTests_RenderTest6.html", context, nullptr);
+
+    boost::filesystem::path outputPath =
+        test.context().getTestOutputPath("MustacheTemplateEngineProfileTests_RenderTest6.html");
+    Error error; // TODO: use exception
+    BinaryFile outputFile = BinaryFile::Create(outputPath, error);
+    outputFile.write(renderedView.c_str(), renderedView.size());
+    outputFile.close();
+
+    ISHIKO_TEST_FAIL_IF_FILES_NEQ("MustacheTemplateEngineProfileTests_RenderTest6.html",
+        "MustacheTemplateEngineProfileTests_RenderTest6.html");
+    ISHIKO_TEST_PASS();
+}
+
+void MustacheTemplateEngineProfileTests::RenderTest7(Test& test)
+{
+    boost::filesystem::path templateRootDir = test.context().getTestDataPath("templates");
+    MustacheTemplateEngineProfile templateEngineProfile(
+        MustacheTemplateEngineProfile::Options(templateRootDir.string()));
+
+    // Create a context where the "employees" object is an array of "person" objects that are composed of 2 member
+    //  objects: "name" and "country".
+    MapViewContext context;
+    std::vector<ViewContext::Value> employees;
+    employees.push_back(std::map<std::string, ViewContext::Value>({ { "name", "Paul" }, { "country", "Belgium" } }));
+    employees.push_back(std::map<std::string, ViewContext::Value>({ { "name", "Jane" }, { "country", "France" } }));
+    context.map()["employees"] = employees;
+    std::string renderedView =
+        templateEngineProfile.render("MustacheTemplateEngineProfileTests_RenderTest7.html", context, nullptr);
+
+    boost::filesystem::path outputPath =
+        test.context().getTestOutputPath("MustacheTemplateEngineProfileTests_RenderTest7.html");
+    Error error; // TODO: use exception
+    BinaryFile outputFile = BinaryFile::Create(outputPath, error);
+    outputFile.write(renderedView.c_str(), renderedView.size());
+    outputFile.close();
+
+    ISHIKO_TEST_FAIL_IF_FILES_NEQ("MustacheTemplateEngineProfileTests_RenderTest7.html",
+        "MustacheTemplateEngineProfileTests_RenderTest7.html");
+    ISHIKO_TEST_PASS();
+}
+
+void MustacheTemplateEngineProfileTests::RenderTest8(Test& test)
+{
+    boost::filesystem::path templateRootDir = test.context().getTestDataPath("templates");
+    MustacheTemplateEngineProfile templateEngineProfile(
+        MustacheTemplateEngineProfile::Options(templateRootDir.string()));
+
+    // Create a context where the "employees" object is an array of "person" objects that are composed of 2 member
+    //  objects: "name" and "skills". "skills" is an array of strings.
+    MapViewContext context;
+    std::vector<ViewContext::Value> employees;
+    ViewContext::Value skills1 = std::vector<ViewContext::Value>({ "guitar", "piano" });
+    ViewContext::Value skills2 = std::vector<ViewContext::Value>({ "bass" });
+    employees.push_back(std::map<std::string, ViewContext::Value>({ { "name", "Paul" }, { "skills", skills1 } }));
+    employees.push_back(std::map<std::string, ViewContext::Value>({ { "name", "Jane" }, { "skills", skills2 } }));
+    context.map()["employees"] = employees;
+    std::string renderedView =
+        templateEngineProfile.render("MustacheTemplateEngineProfileTests_RenderTest8.html", context, nullptr);
+
+    boost::filesystem::path outputPath =
+        test.context().getTestOutputPath("MustacheTemplateEngineProfileTests_RenderTest8.html");
+    Error error; // TODO: use exception
+    BinaryFile outputFile = BinaryFile::Create(outputPath, error);
+    outputFile.write(renderedView.c_str(), renderedView.size());
+    outputFile.close();
+
+    ISHIKO_TEST_FAIL_IF_FILES_NEQ("MustacheTemplateEngineProfileTests_RenderTest8.html",
+        "MustacheTemplateEngineProfileTests_RenderTest8.html");
     ISHIKO_TEST_PASS();
 }
 
