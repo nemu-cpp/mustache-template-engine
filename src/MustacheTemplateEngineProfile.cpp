@@ -15,53 +15,41 @@ using namespace Nemu;
 namespace
 {
 
-void Add(const std::map<std::string, ViewContext::Value>& valueMap, mstch::node& mustacheNode)
+void Add(const ViewContext::Value& value, mstch::node& mustacheNode)
 {
-    mstch::map items;
-    for (const std::pair<std::string, ViewContext::Value>& item : valueMap)
+    switch (value.type())
     {
-        // TODO: we only cope with string values for now
-        items.emplace(item.first, item.second.asString());
-    }
-    mustacheNode = std::move(items);
-}
+    case ViewContext::Value::Type::string:
+        mustacheNode = value.asString();
+        break;
 
-void Add(const std::map<std::string, ViewContext::Value>& valueMap, mstch::array& mustacheArray)
-{
-    mstch::map items;
-    for (const std::pair<std::string, ViewContext::Value>& item : valueMap)
-    {
-        // TODO: we only cope with string values for now
-        items.emplace(item.first, item.second.asString());
-    }
-    mustacheArray.push_back(std::move(items));
-}
-
-void Add(const std::vector<ViewContext::Value>& valueArray, mstch::node& mustacheNode)
-{
-    mstch::array items;
-    for (const ViewContext::Value& v : valueArray)
-    {
-        switch (v.type())
+    case ViewContext::Value::Type::valueArray:
         {
-        case ViewContext::Value::Type::string:
-            items.push_back(mstch::map{ { "item", v.asString() } });
-            break;
-
-        case ViewContext::Value::Type::valueArray:
-            // TODO
-            break;
-
-        case ViewContext::Value::Type::valueMap:
-            Add(v.asValueMap(), items);
-            break;
-
-        default:
-            // TODO: error
-            break;
+            mstch::array items;
+            for (const ViewContext::Value& v : value.asValueArray())
+            {
+                items.push_back(mstch::node());
+                Add(v, items.back());
+            }
+            mustacheNode = std::move(items);
         }
+        break;
+
+    case ViewContext::Value::Type::valueMap:
+        {
+            mstch::map items;
+            for (const std::pair<std::string, ViewContext::Value>& item : value.asValueMap())
+            {
+                Add(item.second, items[item.first]);
+            }
+            mustacheNode = std::move(items);
+        }
+        break;
+
+    default:
+        // TODO error
+        break;
     }
-    mustacheNode = std::move(items);
 }
 
 }
@@ -115,24 +103,7 @@ std::string MustacheTemplateEngineProfile::render(const std::string& view, ViewC
     mstch::map mustacheContext;
     for (const std::pair<std::string, ViewContext::Value>& item : context.toMap())
     {
-        switch (item.second.type())
-        {
-        case ViewContext::Value::Type::string:
-            mustacheContext[item.first] = item.second.asString();
-            break;
-
-        case ViewContext::Value::Type::valueArray:
-            Add(item.second.asValueArray(), mustacheContext[item.first]);
-            break;
-
-        case ViewContext::Value::Type::valueMap:
-            Add(item.second.asValueMap(), mustacheContext[item.first]);
-            break;
-
-        default:
-            // TODO error
-            break;
-        }
+        Add(item.second, mustacheContext[item.first]);
     }
 
     if (!layout)
