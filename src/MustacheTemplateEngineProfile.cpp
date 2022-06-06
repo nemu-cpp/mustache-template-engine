@@ -15,6 +15,7 @@ using namespace Nemu;
 namespace
 {
 
+// TODO: this is recursive: fix
 void Add(const ViewContext::Value& value, mstch::node& mustacheNode)
 {
     switch (value.type())
