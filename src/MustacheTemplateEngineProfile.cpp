@@ -8,8 +8,63 @@
 #include <Ishiko/Process.hpp>
 #include <Ishiko/FileSystem.hpp>
 #include <mstch/mstch.hpp>
+#include <map>
 
 using namespace Nemu;
+
+namespace
+{
+
+void Add(const std::string& name, const std::map<std::string, ViewContext::Value>& valueMap, mstch::map& mustacheMap)
+{
+    mstch::map items;
+    for (const std::pair<std::string, ViewContext::Value>& item : valueMap)
+    {
+        // TODO: we only cope with string values for now
+        items.emplace(item.first, item.second.asString());
+    }
+    mustacheMap.emplace(name, std::move(items));
+}
+
+void Add(const std::map<std::string, ViewContext::Value>& valueMap, mstch::array& mustacheArray)
+{
+    mstch::map items;
+    for (const std::pair<std::string, ViewContext::Value>& item : valueMap)
+    {
+        // TODO: we only cope with string values for now
+        items.emplace(item.first, item.second.asString());
+    }
+    mustacheArray.push_back(std::move(items));
+}
+
+void Add(const std::string& name, const std::vector<ViewContext::Value>& valueArray, mstch::map& mustacheMap)
+{
+    mstch::array items;
+    for (const ViewContext::Value& v : valueArray)
+    {
+        switch (v.type())
+        {
+        case ViewContext::Value::Type::string:
+            items.push_back(mstch::map{ { "item", v.asString() } });
+            break;
+
+        case ViewContext::Value::Type::valueArray:
+            // TODO
+            break;
+
+        case ViewContext::Value::Type::valueMap:
+            Add(v.asValueMap(), items);
+            break;
+
+        default:
+            // TODO: error
+            break;
+        }
+    }
+    mustacheMap.emplace(name, std::move(items));
+}
+
+}
 
 MustacheTemplateEngineProfile::Options::Options(const std::string& templatesRootDirectory)
 {
@@ -67,54 +122,12 @@ std::string MustacheTemplateEngineProfile::render(const std::string& view, ViewC
             break;
 
         case ViewContext::Value::Type::valueArray:
-            {
-                mstch::array items;
-                for (const ViewContext::Value& v : item.second.asValueArray())
-                {
-                    switch (v.type())
-                    {
-                    case ViewContext::Value::Type::string:
-                        items.push_back(mstch::map{ { "item", v.asString() } });
-                        break;
-
-                    case ViewContext::Value::Type::valueArray:
-                        // TODO
-                        break;
-
-                    case ViewContext::Value::Type::valueMap:
-                        {
-                            // TODO: we only support 1 level of nesting. I need to make a "recursive" function out of
-                            // this and merge with the valueMap case below
-                            mstch::map items1;
-                            for (const std::pair<std::string, ViewContext::Value>& item : v.asValueMap())
-                            {
-                                // TODO: we only cope with string values for now
-                                items1.emplace(item.first, item.second.asString());
-                            }
-                            items.push_back(items1);
-                        }
-                        break;
-
-                    default:
-                        // TODO: error
-                        break;
-                    }
-                }
-                mustacheContext.emplace(item.first, std::move(items));
-            }
+            Add(item.first, item.second.asValueArray(), mustacheContext);
             break;
 
         case ViewContext::Value::Type::valueMap:
-            {
-                mstch::map items;
-                for (const std::pair<std::string, ViewContext::Value>& item : item.second.asValueMap())
-                {
-                    // TODO: we only cope with string values for now
-                    items.emplace(item.first, item.second.asString());
-                }
-                mustacheContext.emplace(item.first, std::move(items));
-            }
-        break;
+            Add(item.first, item.second.asValueMap(), mustacheContext);
+            break;
 
         default:
             // TODO error
