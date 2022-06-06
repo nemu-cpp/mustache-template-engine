@@ -20,6 +20,7 @@ private:
     static void RenderTest2(Ishiko::Test& test);
     static void RenderTest3(Ishiko::Test& test);
     static void RenderTest4(Ishiko::Test& test);
+    static void RenderTest5(Ishiko::Test& test);
     static void RenderTest6(Ishiko::Test& test);
     static void RenderTest7(Ishiko::Test& test);
     static void RenderWithLayoutTest1(Ishiko::Test& test);
