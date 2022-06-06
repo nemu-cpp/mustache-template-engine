@@ -15,7 +15,7 @@ using namespace Nemu;
 namespace
 {
 
-void Add(const std::string& name, const std::map<std::string, ViewContext::Value>& valueMap, mstch::map& mustacheMap)
+void Add(const std::map<std::string, ViewContext::Value>& valueMap, mstch::node& mustacheNode)
 {
     mstch::map items;
     for (const std::pair<std::string, ViewContext::Value>& item : valueMap)
@@ -23,7 +23,7 @@ void Add(const std::string& name, const std::map<std::string, ViewContext::Value
         // TODO: we only cope with string values for now
         items.emplace(item.first, item.second.asString());
     }
-    mustacheMap.emplace(name, std::move(items));
+    mustacheNode = std::move(items);
 }
 
 void Add(const std::map<std::string, ViewContext::Value>& valueMap, mstch::array& mustacheArray)
@@ -37,7 +37,7 @@ void Add(const std::map<std::string, ViewContext::Value>& valueMap, mstch::array
     mustacheArray.push_back(std::move(items));
 }
 
-void Add(const std::string& name, const std::vector<ViewContext::Value>& valueArray, mstch::map& mustacheMap)
+void Add(const std::vector<ViewContext::Value>& valueArray, mstch::node& mustacheNode)
 {
     mstch::array items;
     for (const ViewContext::Value& v : valueArray)
@@ -61,7 +61,7 @@ void Add(const std::string& name, const std::vector<ViewContext::Value>& valueAr
             break;
         }
     }
-    mustacheMap.emplace(name, std::move(items));
+    mustacheNode = std::move(items);
 }
 
 }
@@ -118,15 +118,15 @@ std::string MustacheTemplateEngineProfile::render(const std::string& view, ViewC
         switch (item.second.type())
         {
         case ViewContext::Value::Type::string:
-            mustacheContext.emplace(item.first, item.second.asString());
+            mustacheContext[item.first] = item.second.asString();
             break;
 
         case ViewContext::Value::Type::valueArray:
-            Add(item.first, item.second.asValueArray(), mustacheContext);
+            Add(item.second.asValueArray(), mustacheContext[item.first]);
             break;
 
         case ViewContext::Value::Type::valueMap:
-            Add(item.first, item.second.asValueMap(), mustacheContext);
+            Add(item.second.asValueMap(), mustacheContext[item.first]);
             break;
 
         default:
