@@ -29,6 +29,7 @@ MustacheTemplateEngineProfileTests::MustacheTemplateEngineProfileTests(const Tes
     append<HeapAllocationErrorsTest>("render test 5", RenderTest5);
     append<HeapAllocationErrorsTest>("render test 6", RenderTest6);
     append<HeapAllocationErrorsTest>("render test 7", RenderTest7);
+    append<HeapAllocationErrorsTest>("render test 8", RenderTest8);
     append<HeapAllocationErrorsTest>("render with layout test 1", RenderWithLayoutTest1);
     append<HeapAllocationErrorsTest>("render with layout test 2", RenderWithLayoutTest2);
 }
@@ -210,6 +211,36 @@ void MustacheTemplateEngineProfileTests::RenderTest7(Test& test)
 
     ISHIKO_TEST_FAIL_IF_FILES_NEQ("MustacheTemplateEngineProfileTests_RenderTest7.html",
         "MustacheTemplateEngineProfileTests_RenderTest7.html");
+    ISHIKO_TEST_PASS();
+}
+
+void MustacheTemplateEngineProfileTests::RenderTest8(Test& test)
+{
+    boost::filesystem::path templateRootDir = test.context().getTestDataPath("templates");
+    MustacheTemplateEngineProfile templateEngineProfile(
+        MustacheTemplateEngineProfile::Options(templateRootDir.string()));
+
+    // Create a context where the "employees" object is an array of "person" objects that are composed of 2 member
+    //  objects: "name" and "skills". "skills" is an array of strings.
+    MapViewContext context;
+    std::vector<ViewContext::Value> employees;
+    ViewContext::Value skills1 = std::vector<ViewContext::Value>({ "guitar", "piano" });
+    ViewContext::Value skills2 = std::vector<ViewContext::Value>({ "bass" });
+    employees.push_back(std::map<std::string, ViewContext::Value>({ { "name", "Paul" }, { "skills", skills1 } }));
+    employees.push_back(std::map<std::string, ViewContext::Value>({ { "name", "Jane" }, { "skills", skills2 } }));
+    context.map()["employees"] = employees;
+    std::string renderedView =
+        templateEngineProfile.render("MustacheTemplateEngineProfileTests_RenderTest8.html", context, nullptr);
+
+    boost::filesystem::path outputPath =
+        test.context().getTestOutputPath("MustacheTemplateEngineProfileTests_RenderTest8.html");
+    Error error; // TODO: use exception
+    BinaryFile outputFile = BinaryFile::Create(outputPath, error);
+    outputFile.write(renderedView.c_str(), renderedView.size());
+    outputFile.close();
+
+    ISHIKO_TEST_FAIL_IF_FILES_NEQ("MustacheTemplateEngineProfileTests_RenderTest8.html",
+        "MustacheTemplateEngineProfileTests_RenderTest8.html");
     ISHIKO_TEST_PASS();
 }
 
