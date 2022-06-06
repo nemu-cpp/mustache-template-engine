@@ -8,8 +8,84 @@
 #include <Ishiko/Process.hpp>
 #include <Ishiko/FileSystem.hpp>
 #include <mstch/mstch.hpp>
+#include <map>
 
 using namespace Nemu;
+
+namespace
+{
+
+void Add(const ViewContext::Value& value, mstch::node& mustacheNode)
+{
+    // To avoid the use of a recursive function we use an explicit stack to process the input. We think the additional
+    // complexity is justified by the fact that this function may end up processing untrusted input data.
+    // 
+    // Each pair on the stack contains:
+    //   - a value that has not been added to the mstch data structure,
+    //   - a reserved unitialized node into which that value should be copied.
+    // At each step of the loop:
+    //   1. we take the element at the front of the queue and copy it into the reserved unitialized node,
+    //   2. create a new reserved unitialized node for each children value of the element,
+    //   3. add new items at the back of the stack for each of the children and their uninitialized reserved nodes.
+
+    // TODO: we should also set a limit to the size of the stack. Although if we can't hold the stack in memory then
+    // the input data structure itseld is probably so big it wouldn't fit in memory.
+
+    std::vector<std::pair<const ViewContext::Value*, mstch::node*>> stack = { { &value, &mustacheNode } };
+    while (!stack.empty())
+    {
+        const ViewContext::Value* currentValue = stack.front().first;
+        mstch::node* currentUnitializedNode = stack.front().second;
+        stack.erase(stack.begin());
+
+        switch (currentValue->type())
+        {
+        case ViewContext::Value::Type::string:
+            // A string has no children so there is nothing to push on the stack.
+            *currentUnitializedNode = currentValue->asString();
+            break;
+
+        case ViewContext::Value::Type::valueArray:
+            {
+                // For an array we create a new array node and add N unitialized child nodes where N is the size of the
+                // array. We add a new item on the stack for each child value and its reserved node.
+                const std::vector<ViewContext::Value>& srcArray = currentValue->asValueArray();
+                *currentUnitializedNode = mstch::array();
+                mstch::array& dstArray = boost::get<mstch::array>(*currentUnitializedNode);
+                // It is imperative to reserve the right capacity for the array as we are adding a pointer to the last
+                // element at each iteration. The pointers would become invalid if the array was reallocated. 
+                dstArray.reserve(srcArray.size());
+                for (std::vector<ViewContext::Value>::const_iterator it = srcArray.begin(); it != srcArray.end(); ++it)
+                {
+                    dstArray.push_back(mstch::node());
+                    stack.emplace_back(&(*it), &dstArray.back());
+                }
+            }
+            break;
+
+        case ViewContext::Value::Type::valueMap:
+            {
+                // For a map we create a new map node and add unitialized nodes to each for each item in the map. We
+                // add a new item on the stack for each child value and its reserved node.
+                *currentUnitializedNode = mstch::map();
+                mstch::map& dstMap = boost::get<mstch::map>(*currentUnitializedNode);
+                const std::map<std::string, ViewContext::Value>& srcMap = currentValue->asValueMap();
+                for (std::map<std::string, ViewContext::Value>::const_iterator it = srcMap.begin(); it != srcMap.end();
+                    ++it)
+                {
+                    stack.emplace_back(&it->second, &dstMap[it->first]);
+                }
+            }
+            break;
+
+        default:
+            // TODO error
+            break;
+        }
+    }
+}
+
+}
 
 MustacheTemplateEngineProfile::Options::Options(const std::string& templatesRootDirectory)
 {
@@ -60,27 +136,7 @@ std::string MustacheTemplateEngineProfile::render(const std::string& view, ViewC
     mstch::map mustacheContext;
     for (const std::pair<std::string, ViewContext::Value>& item : context.toMap())
     {
-        switch (item.second.type())
-        {
-        case ViewContext::Value::Type::string:
-            mustacheContext.emplace(item.first, item.second.asString());
-            break;
-
-        case ViewContext::Value::Type::stringArray:
-            {
-                mstch::array items;
-                for (const std::string& str : item.second.asStringArray())
-                {
-                    items.push_back(mstch::map{ { "item", str } });
-                }
-                mustacheContext.emplace(item.first, std::move(items));
-            }
-            break;
-
-        default:
-            // TODO error
-            break;
-        }
+        Add(item.second, mustacheContext[item.first]);
     }
 
     if (!layout)
