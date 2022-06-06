@@ -13,7 +13,8 @@ std::shared_ptr<TemplateEngineProfile> MustacheTemplateEngine::createProfile(
     const Ishiko::Configuration& configuration) const
 {
     // TODO: validate configuration
-    MustacheTemplateEngineProfile::Options options(configuration.value("templates-root-directory"),
-        configuration.valueOrNull("layouts-root-directory"));
+    const Ishiko::Configuration::Value* layoutsRootDirectory = configuration.valueOrNull("layouts-root-directory");
+    MustacheTemplateEngineProfile::Options options(configuration.value("templates-root-directory").asString(),
+        (layoutsRootDirectory ? &layoutsRootDirectory->asString() : nullptr));
     return std::make_shared<MustacheTemplateEngineProfile>(options);
 }
