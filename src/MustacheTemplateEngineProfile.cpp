@@ -66,16 +66,29 @@ std::string MustacheTemplateEngineProfile::render(const std::string& view, ViewC
             mustacheContext.emplace(item.first, item.second.asString());
             break;
 
-        case ViewContext::Value::Type::stringArray:
+        case ViewContext::Value::Type::valueArray:
             {
                 mstch::array items;
-                for (const std::string& str : item.second.asStringArray())
+                for (const ViewContext::Value& v : item.second.asValueArray())
                 {
-                    items.push_back(mstch::map{ { "item", str } });
+                    // TODO: we only cope with string values for now
+                    items.push_back(mstch::map{ { "item", v.asString() } });
                 }
                 mustacheContext.emplace(item.first, std::move(items));
             }
             break;
+
+        case ViewContext::Value::Type::valueMap:
+            {
+                mstch::map items;
+                for (const std::pair<std::string, ViewContext::Value>& item : item.second.asValueMap())
+                {
+                    // TODO: we only cope with string values for now
+                    items.emplace(item.first, item.second.asString());
+                }
+                mustacheContext.emplace(item.first, std::move(items));
+            }
+        break;
 
         default:
             // TODO error
