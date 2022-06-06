@@ -71,8 +71,34 @@ std::string MustacheTemplateEngineProfile::render(const std::string& view, ViewC
                 mstch::array items;
                 for (const ViewContext::Value& v : item.second.asValueArray())
                 {
-                    // TODO: we only cope with string values for now
-                    items.push_back(mstch::map{ { "item", v.asString() } });
+                    switch (v.type())
+                    {
+                    case ViewContext::Value::Type::string:
+                        items.push_back(mstch::map{ { "item", v.asString() } });
+                        break;
+
+                    case ViewContext::Value::Type::valueArray:
+                        // TODO
+                        break;
+
+                    case ViewContext::Value::Type::valueMap:
+                        {
+                            // TODO: we only support 1 level of nesting. I need to make a "recursive" function out of
+                            // this and merge with the valueMap case below
+                            mstch::map items1;
+                            for (const std::pair<std::string, ViewContext::Value>& item : v.asValueMap())
+                            {
+                                // TODO: we only cope with string values for now
+                                items1.emplace(item.first, item.second.asString());
+                            }
+                            items.push_back(items1);
+                        }
+                        break;
+
+                    default:
+                        // TODO: error
+                        break;
+                    }
                 }
                 mustacheContext.emplace(item.first, std::move(items));
             }
