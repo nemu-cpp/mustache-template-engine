@@ -15,41 +15,73 @@ using namespace Nemu;
 namespace
 {
 
-// TODO: this is recursive: fix
 void Add(const ViewContext::Value& value, mstch::node& mustacheNode)
 {
-    switch (value.type())
+    // To avoid the use of a recursive function we use an explicit stack to process the input. We think the additional
+    // complexity is justified by the fact that this function may end up processing untrusted input data.
+    // 
+    // Each pair on the stack contains:
+    //   - a value that has not been added to the mstch data structure,
+    //   - a reserved unitialized node into which that value should be copied.
+    // At each step of the loop:
+    //   1. we take the element at the front of the queue and copy it into the reserved unitialized node,
+    //   2. create a new reserved unitialized node for each children value of the element,
+    //   3. add new items at the back of the stack for each of the children and their uninitialized reserved nodes.
+
+    // TODO: we should also set a limit to the size of the stack. Although if we can't hold the stack in memory then
+    // the input data structure itseld is probably so big it wouldn't fit in memory.
+
+    std::vector<std::pair<const ViewContext::Value*, mstch::node*>> stack = { { &value, &mustacheNode } };
+    while (!stack.empty())
     {
-    case ViewContext::Value::Type::string:
-        mustacheNode = value.asString();
-        break;
+        const ViewContext::Value* currentValue = stack.front().first;
+        mstch::node* currentUnitializedNode = stack.front().second;
+        stack.erase(stack.begin());
 
-    case ViewContext::Value::Type::valueArray:
+        switch (currentValue->type())
         {
-            mstch::array items;
-            for (const ViewContext::Value& v : value.asValueArray())
-            {
-                items.push_back(mstch::node());
-                Add(v, items.back());
-            }
-            mustacheNode = std::move(items);
-        }
-        break;
+        case ViewContext::Value::Type::string:
+            // A string has no children so there is nothing to push on the stack.
+            *currentUnitializedNode = currentValue->asString();
+            break;
 
-    case ViewContext::Value::Type::valueMap:
-        {
-            mstch::map items;
-            for (const std::pair<std::string, ViewContext::Value>& item : value.asValueMap())
+        case ViewContext::Value::Type::valueArray:
             {
-                Add(item.second, items[item.first]);
+                // For an array we create a new array node and add N unitialized child nodes where N is the size of the
+                // array. We add a new item on the stack for each child value and its reserved node.
+                const std::vector<ViewContext::Value>& srcArray = currentValue->asValueArray();
+                *currentUnitializedNode = mstch::array();
+                mstch::array& dstArray = boost::get<mstch::array>(*currentUnitializedNode);
+                // It is imperative to reserve the right capacity for the array as we are adding a pointer to the last
+                // element at each iteration. The pointers would become invalid if the array was reallocated. 
+                dstArray.reserve(srcArray.size());
+                for (std::vector<ViewContext::Value>::const_iterator it = srcArray.begin(); it != srcArray.end(); ++it)
+                {
+                    dstArray.push_back(mstch::node());
+                    stack.emplace_back(&(*it), &dstArray.back());
+                }
             }
-            mustacheNode = std::move(items);
-        }
-        break;
+            break;
 
-    default:
-        // TODO error
-        break;
+        case ViewContext::Value::Type::valueMap:
+            {
+                // For a map we create a new map node and add unitialized nodes to each for each item in the map. We
+                // add a new item on the stack for each child value and its reserved node.
+                *currentUnitializedNode = mstch::map();
+                mstch::map& dstMap = boost::get<mstch::map>(*currentUnitializedNode);
+                const std::map<std::string, ViewContext::Value>& srcMap = currentValue->asValueMap();
+                for (std::map<std::string, ViewContext::Value>::const_iterator it = srcMap.begin(); it != srcMap.end();
+                    ++it)
+                {
+                    stack.emplace_back(&it->second, &dstMap[it->first]);
+                }
+            }
+            break;
+
+        default:
+            // TODO error
+            break;
+        }
     }
 }
 
