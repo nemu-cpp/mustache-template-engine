@@ -43,7 +43,7 @@ void MustacheTemplateEngineProfileTests::ConstructorTest1(Test& test)
 
 void MustacheTemplateEngineProfileTests::RenderTest1(Test& test)
 {
-    boost::filesystem::path templateRootDir = test.context().getTestDataPath("templates");
+    boost::filesystem::path templateRootDir = test.context().getDataPath("templates");
     MustacheTemplateEngineProfile templateEngineProfile(
         MustacheTemplateEngineProfile::Options(templateRootDir.string()));
 
@@ -52,20 +52,19 @@ void MustacheTemplateEngineProfileTests::RenderTest1(Test& test)
         templateEngineProfile.render("MustacheTemplateEngineProfileTests_RenderTest1.html", context, nullptr);
 
     boost::filesystem::path outputPath =
-        test.context().getTestOutputPath("MustacheTemplateEngineProfileTests_RenderTest1.html");
+        test.context().getOutputPath("MustacheTemplateEngineProfileTests_RenderTest1.html");
     Error error; // TODO: use exception
     BinaryFile outputFile = BinaryFile::Create(outputPath, error);
     outputFile.write(renderedView.c_str(), renderedView.size());
     outputFile.close();
 
-    ISHIKO_TEST_FAIL_IF_FILES_NEQ("MustacheTemplateEngineProfileTests_RenderTest1.html",
-        "MustacheTemplateEngineProfileTests_RenderTest1.html");
+    ISHIKO_TEST_FAIL_IF_OUTPUT_AND_REFERENCE_FILES_NEQ("MustacheTemplateEngineProfileTests_RenderTest1.html");
     ISHIKO_TEST_PASS();
 }
 
 void MustacheTemplateEngineProfileTests::RenderTest2(Test& test)
 {
-    boost::filesystem::path templateRootDir = test.context().getTestDataPath("templates");
+    boost::filesystem::path templateRootDir = test.context().getDataPath("templates");
     MustacheTemplateEngineProfile templateEngineProfile(
         MustacheTemplateEngineProfile::Options(templateRootDir.string()));
 
@@ -75,20 +74,19 @@ void MustacheTemplateEngineProfileTests::RenderTest2(Test& test)
         templateEngineProfile.render("MustacheTemplateEngineProfileTests_RenderTest2.html", context, nullptr);
 
     boost::filesystem::path outputPath =
-        test.context().getTestOutputPath("MustacheTemplateEngineProfileTests_RenderTest2.html");
+        test.context().getOutputPath("MustacheTemplateEngineProfileTests_RenderTest2.html");
     Error error; // TODO: use exception
     BinaryFile outputFile = BinaryFile::Create(outputPath, error);
     outputFile.write(renderedView.c_str(), renderedView.size());
     outputFile.close();
 
-    ISHIKO_TEST_FAIL_IF_FILES_NEQ("MustacheTemplateEngineProfileTests_RenderTest2.html",
-        "MustacheTemplateEngineProfileTests_RenderTest2.html");
+    ISHIKO_TEST_FAIL_IF_OUTPUT_AND_REFERENCE_FILES_NEQ("MustacheTemplateEngineProfileTests_RenderTest2.html");
     ISHIKO_TEST_PASS();
 }
 
 void MustacheTemplateEngineProfileTests::RenderTest3(Test& test)
 {
-    boost::filesystem::path templateRootDir = test.context().getTestDataPath("templates");
+    boost::filesystem::path templateRootDir = test.context().getDataPath("templates");
     MustacheTemplateEngineProfile templateEngineProfile(
         MustacheTemplateEngineProfile::Options(templateRootDir.string()));
 
@@ -98,20 +96,19 @@ void MustacheTemplateEngineProfileTests::RenderTest3(Test& test)
         templateEngineProfile.render("MustacheTemplateEngineProfileTests_RenderTest2.html", context, nullptr);
 
     boost::filesystem::path outputPath =
-        test.context().getTestOutputPath("MustacheTemplateEngineProfileTests_RenderTest3.html");
+        test.context().getOutputPath("MustacheTemplateEngineProfileTests_RenderTest3.html");
     Error error; // TODO: use exception
     BinaryFile outputFile = BinaryFile::Create(outputPath, error);
     outputFile.write(renderedView.c_str(), renderedView.size());
     outputFile.close();
 
-    ISHIKO_TEST_FAIL_IF_FILES_NEQ("MustacheTemplateEngineProfileTests_RenderTest3.html",
-        "MustacheTemplateEngineProfileTests_RenderTest3.html");
+    ISHIKO_TEST_FAIL_IF_OUTPUT_AND_REFERENCE_FILES_NEQ("MustacheTemplateEngineProfileTests_RenderTest3.html");
     ISHIKO_TEST_PASS();
 }
 
 void MustacheTemplateEngineProfileTests::RenderTest4(Test& test)
 {
-    boost::filesystem::path templateRootDir = test.context().getTestDataPath("templates");
+    boost::filesystem::path templateRootDir = test.context().getDataPath("templates");
     MustacheTemplateEngineProfile templateEngineProfile(
         MustacheTemplateEngineProfile::Options(templateRootDir.string()));
 
@@ -123,20 +120,19 @@ void MustacheTemplateEngineProfileTests::RenderTest4(Test& test)
         templateEngineProfile.render("MustacheTemplateEngineProfileTests_RenderTest4.html", context, nullptr);
 
     boost::filesystem::path outputPath =
-        test.context().getTestOutputPath("MustacheTemplateEngineProfileTests_RenderTest4.html");
+        test.context().getOutputPath("MustacheTemplateEngineProfileTests_RenderTest4.html");
     Error error; // TODO: use exception
     BinaryFile outputFile = BinaryFile::Create(outputPath, error);
     outputFile.write(renderedView.c_str(), renderedView.size());
     outputFile.close();
 
-    ISHIKO_TEST_FAIL_IF_FILES_NEQ("MustacheTemplateEngineProfileTests_RenderTest4.html",
-        "MustacheTemplateEngineProfileTests_RenderTest4.html");
+    ISHIKO_TEST_FAIL_IF_OUTPUT_AND_REFERENCE_FILES_NEQ("MustacheTemplateEngineProfileTests_RenderTest4.html");
     ISHIKO_TEST_PASS();
 }
 
 void MustacheTemplateEngineProfileTests::RenderTest5(Test& test)
 {
-    boost::filesystem::path templateRootDir = test.context().getTestDataPath("templates");
+    boost::filesystem::path templateRootDir = test.context().getDataPath("templates");
     MustacheTemplateEngineProfile templateEngineProfile(
         MustacheTemplateEngineProfile::Options(templateRootDir.string()));
 
@@ -151,20 +147,19 @@ void MustacheTemplateEngineProfileTests::RenderTest5(Test& test)
         templateEngineProfile.render("MustacheTemplateEngineProfileTests_RenderTest5.html", context, nullptr);
 
     boost::filesystem::path outputPath =
-        test.context().getTestOutputPath("MustacheTemplateEngineProfileTests_RenderTest5.html");
+        test.context().getOutputPath("MustacheTemplateEngineProfileTests_RenderTest5.html");
     Error error; // TODO: use exception
     BinaryFile outputFile = BinaryFile::Create(outputPath, error);
     outputFile.write(renderedView.c_str(), renderedView.size());
     outputFile.close();
 
-    ISHIKO_TEST_FAIL_IF_FILES_NEQ("MustacheTemplateEngineProfileTests_RenderTest5.html",
-        "MustacheTemplateEngineProfileTests_RenderTest5.html");
+    ISHIKO_TEST_FAIL_IF_OUTPUT_AND_REFERENCE_FILES_NEQ("MustacheTemplateEngineProfileTests_RenderTest5.html");
     ISHIKO_TEST_PASS();
 }
 
 void MustacheTemplateEngineProfileTests::RenderTest6(Test& test)
 {
-    boost::filesystem::path templateRootDir = test.context().getTestDataPath("templates");
+    boost::filesystem::path templateRootDir = test.context().getDataPath("templates");
     MustacheTemplateEngineProfile templateEngineProfile(
         MustacheTemplateEngineProfile::Options(templateRootDir.string()));
 
@@ -175,25 +170,24 @@ void MustacheTemplateEngineProfileTests::RenderTest6(Test& test)
         templateEngineProfile.render("MustacheTemplateEngineProfileTests_RenderTest6.html", context, nullptr);
 
     boost::filesystem::path outputPath =
-        test.context().getTestOutputPath("MustacheTemplateEngineProfileTests_RenderTest6.html");
+        test.context().getOutputPath("MustacheTemplateEngineProfileTests_RenderTest6.html");
     Error error; // TODO: use exception
     BinaryFile outputFile = BinaryFile::Create(outputPath, error);
     outputFile.write(renderedView.c_str(), renderedView.size());
     outputFile.close();
 
-    ISHIKO_TEST_FAIL_IF_FILES_NEQ("MustacheTemplateEngineProfileTests_RenderTest6.html",
-        "MustacheTemplateEngineProfileTests_RenderTest6.html");
+    ISHIKO_TEST_FAIL_IF_OUTPUT_AND_REFERENCE_FILES_NEQ("MustacheTemplateEngineProfileTests_RenderTest6.html");
     ISHIKO_TEST_PASS();
 }
 
 void MustacheTemplateEngineProfileTests::RenderTest7(Test& test)
 {
-    boost::filesystem::path templateRootDir = test.context().getTestDataPath("templates");
+    boost::filesystem::path templateRootDir = test.context().getDataPath("templates");
     MustacheTemplateEngineProfile templateEngineProfile(
         MustacheTemplateEngineProfile::Options(templateRootDir.string()));
 
     // Create a context where the "employees" object is an array of "person" objects that are composed of 2 member
-    //  objects: "name" and "country".
+    // objects: "name" and "country".
     MapViewContext context;
     std::vector<ViewContext::Value> employees;
     employees.push_back(std::map<std::string, ViewContext::Value>({ { "name", "Paul" }, { "country", "Belgium" } }));
@@ -203,20 +197,19 @@ void MustacheTemplateEngineProfileTests::RenderTest7(Test& test)
         templateEngineProfile.render("MustacheTemplateEngineProfileTests_RenderTest7.html", context, nullptr);
 
     boost::filesystem::path outputPath =
-        test.context().getTestOutputPath("MustacheTemplateEngineProfileTests_RenderTest7.html");
+        test.context().getOutputPath("MustacheTemplateEngineProfileTests_RenderTest7.html");
     Error error; // TODO: use exception
     BinaryFile outputFile = BinaryFile::Create(outputPath, error);
     outputFile.write(renderedView.c_str(), renderedView.size());
     outputFile.close();
 
-    ISHIKO_TEST_FAIL_IF_FILES_NEQ("MustacheTemplateEngineProfileTests_RenderTest7.html",
-        "MustacheTemplateEngineProfileTests_RenderTest7.html");
+    ISHIKO_TEST_FAIL_IF_OUTPUT_AND_REFERENCE_FILES_NEQ("MustacheTemplateEngineProfileTests_RenderTest7.html");
     ISHIKO_TEST_PASS();
 }
 
 void MustacheTemplateEngineProfileTests::RenderTest8(Test& test)
 {
-    boost::filesystem::path templateRootDir = test.context().getTestDataPath("templates");
+    boost::filesystem::path templateRootDir = test.context().getDataPath("templates");
     MustacheTemplateEngineProfile templateEngineProfile(
         MustacheTemplateEngineProfile::Options(templateRootDir.string()));
 
@@ -233,21 +226,20 @@ void MustacheTemplateEngineProfileTests::RenderTest8(Test& test)
         templateEngineProfile.render("MustacheTemplateEngineProfileTests_RenderTest8.html", context, nullptr);
 
     boost::filesystem::path outputPath =
-        test.context().getTestOutputPath("MustacheTemplateEngineProfileTests_RenderTest8.html");
+        test.context().getOutputPath("MustacheTemplateEngineProfileTests_RenderTest8.html");
     Error error; // TODO: use exception
     BinaryFile outputFile = BinaryFile::Create(outputPath, error);
     outputFile.write(renderedView.c_str(), renderedView.size());
     outputFile.close();
 
-    ISHIKO_TEST_FAIL_IF_FILES_NEQ("MustacheTemplateEngineProfileTests_RenderTest8.html",
-        "MustacheTemplateEngineProfileTests_RenderTest8.html");
+    ISHIKO_TEST_FAIL_IF_OUTPUT_AND_REFERENCE_FILES_NEQ("MustacheTemplateEngineProfileTests_RenderTest8.html");
     ISHIKO_TEST_PASS();
 }
 
 void MustacheTemplateEngineProfileTests::RenderWithLayoutTest1(Test& test)
 {
-    boost::filesystem::path templateRootDir = test.context().getTestDataPath("templates");
-    boost::filesystem::path layoutRootDir = test.context().getTestDataPath("layouts");
+    boost::filesystem::path templateRootDir = test.context().getDataPath("templates");
+    boost::filesystem::path layoutRootDir = test.context().getDataPath("layouts");
     MustacheTemplateEngineProfile templateEngineProfile(
         MustacheTemplateEngineProfile::Options(templateRootDir.string(), &layoutRootDir.string()));
 
@@ -259,21 +251,20 @@ void MustacheTemplateEngineProfileTests::RenderWithLayoutTest1(Test& test)
             &layout);
 
     boost::filesystem::path outputPath =
-        test.context().getTestOutputPath("MustacheTemplateEngineProfileTests_RenderWithLayoutTest1.html");
+        test.context().getOutputPath("MustacheTemplateEngineProfileTests_RenderWithLayoutTest1.html");
     Error error; // TODO: use exception
     BinaryFile outputFile = BinaryFile::Create(outputPath, error);
     outputFile.write(renderedView.c_str(), renderedView.size());
     outputFile.close();
 
-    ISHIKO_TEST_FAIL_IF_FILES_NEQ("MustacheTemplateEngineProfileTests_RenderWithLayoutTest1.html",
-        "MustacheTemplateEngineProfileTests_RenderWithLayoutTest1.html");
+    ISHIKO_TEST_FAIL_IF_OUTPUT_AND_REFERENCE_FILES_NEQ("MustacheTemplateEngineProfileTests_RenderWithLayoutTest1.html");
     ISHIKO_TEST_PASS();
 }
 
 void MustacheTemplateEngineProfileTests::RenderWithLayoutTest2(Test& test)
 {
-    boost::filesystem::path templateRootDir = test.context().getTestDataPath("templates");
-    boost::filesystem::path layoutRootDir = test.context().getTestDataPath("layouts");
+    boost::filesystem::path templateRootDir = test.context().getDataPath("templates");
+    boost::filesystem::path layoutRootDir = test.context().getDataPath("layouts");
     MustacheTemplateEngineProfile templateEngineProfile(
         MustacheTemplateEngineProfile::Options(templateRootDir.string(), &layoutRootDir.string()));
 
@@ -285,13 +276,12 @@ void MustacheTemplateEngineProfileTests::RenderWithLayoutTest2(Test& test)
             &layout);
 
     boost::filesystem::path outputPath =
-        test.context().getTestOutputPath("MustacheTemplateEngineProfileTests_RenderWithLayoutTest2.html");
+        test.context().getOutputPath("MustacheTemplateEngineProfileTests_RenderWithLayoutTest2.html");
     Error error; // TODO: use exception
     BinaryFile outputFile = BinaryFile::Create(outputPath, error);
     outputFile.write(renderedView.c_str(), renderedView.size());
     outputFile.close();
 
-    ISHIKO_TEST_FAIL_IF_FILES_NEQ("MustacheTemplateEngineProfileTests_RenderWithLayoutTest2.html",
-        "MustacheTemplateEngineProfileTests_RenderWithLayoutTest2.html");
+    ISHIKO_TEST_FAIL_IF_OUTPUT_AND_REFERENCE_FILES_NEQ("MustacheTemplateEngineProfileTests_RenderWithLayoutTest2.html");
     ISHIKO_TEST_PASS();
 }
