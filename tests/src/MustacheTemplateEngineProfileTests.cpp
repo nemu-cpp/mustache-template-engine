@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2022 Xavier Leclercq
+    Copyright (c) 2022-2023 Xavier Leclercq
     Released under the MIT License
     See https://github.com/nemu-cpp/mustache-template-engine/blob/main/LICENSE.txt
 */
@@ -55,7 +55,7 @@ void MustacheTemplateEngineProfileTests::RenderTest1(Test& test)
         test.context().getOutputPath("MustacheTemplateEngineProfileTests_RenderTest1.html");
     Error error; // TODO: use exception
     BinaryFile outputFile = BinaryFile::Create(outputPath, error);
-    outputFile.write(renderedView.c_str(), renderedView.size());
+    outputFile.write(renderedView.c_str(), renderedView.size(), error);
     outputFile.close();
 
     ISHIKO_TEST_FAIL_IF_OUTPUT_AND_REFERENCE_FILES_NEQ("MustacheTemplateEngineProfileTests_RenderTest1.html");
@@ -77,7 +77,7 @@ void MustacheTemplateEngineProfileTests::RenderTest2(Test& test)
         test.context().getOutputPath("MustacheTemplateEngineProfileTests_RenderTest2.html");
     Error error; // TODO: use exception
     BinaryFile outputFile = BinaryFile::Create(outputPath, error);
-    outputFile.write(renderedView.c_str(), renderedView.size());
+    outputFile.write(renderedView.c_str(), renderedView.size(), error);
     outputFile.close();
 
     ISHIKO_TEST_FAIL_IF_OUTPUT_AND_REFERENCE_FILES_NEQ("MustacheTemplateEngineProfileTests_RenderTest2.html");
@@ -99,7 +99,7 @@ void MustacheTemplateEngineProfileTests::RenderTest3(Test& test)
         test.context().getOutputPath("MustacheTemplateEngineProfileTests_RenderTest3.html");
     Error error; // TODO: use exception
     BinaryFile outputFile = BinaryFile::Create(outputPath, error);
-    outputFile.write(renderedView.c_str(), renderedView.size());
+    outputFile.write(renderedView.c_str(), renderedView.size(), error);
     outputFile.close();
 
     ISHIKO_TEST_FAIL_IF_OUTPUT_AND_REFERENCE_FILES_NEQ("MustacheTemplateEngineProfileTests_RenderTest3.html");
@@ -123,7 +123,7 @@ void MustacheTemplateEngineProfileTests::RenderTest4(Test& test)
         test.context().getOutputPath("MustacheTemplateEngineProfileTests_RenderTest4.html");
     Error error; // TODO: use exception
     BinaryFile outputFile = BinaryFile::Create(outputPath, error);
-    outputFile.write(renderedView.c_str(), renderedView.size());
+    outputFile.write(renderedView.c_str(), renderedView.size(), error);
     outputFile.close();
 
     ISHIKO_TEST_FAIL_IF_OUTPUT_AND_REFERENCE_FILES_NEQ("MustacheTemplateEngineProfileTests_RenderTest4.html");
@@ -150,7 +150,7 @@ void MustacheTemplateEngineProfileTests::RenderTest5(Test& test)
         test.context().getOutputPath("MustacheTemplateEngineProfileTests_RenderTest5.html");
     Error error; // TODO: use exception
     BinaryFile outputFile = BinaryFile::Create(outputPath, error);
-    outputFile.write(renderedView.c_str(), renderedView.size());
+    outputFile.write(renderedView.c_str(), renderedView.size(), error);
     outputFile.close();
 
     ISHIKO_TEST_FAIL_IF_OUTPUT_AND_REFERENCE_FILES_NEQ("MustacheTemplateEngineProfileTests_RenderTest5.html");
@@ -173,7 +173,7 @@ void MustacheTemplateEngineProfileTests::RenderTest6(Test& test)
         test.context().getOutputPath("MustacheTemplateEngineProfileTests_RenderTest6.html");
     Error error; // TODO: use exception
     BinaryFile outputFile = BinaryFile::Create(outputPath, error);
-    outputFile.write(renderedView.c_str(), renderedView.size());
+    outputFile.write(renderedView.c_str(), renderedView.size(), error);
     outputFile.close();
 
     ISHIKO_TEST_FAIL_IF_OUTPUT_AND_REFERENCE_FILES_NEQ("MustacheTemplateEngineProfileTests_RenderTest6.html");
@@ -200,7 +200,7 @@ void MustacheTemplateEngineProfileTests::RenderTest7(Test& test)
         test.context().getOutputPath("MustacheTemplateEngineProfileTests_RenderTest7.html");
     Error error; // TODO: use exception
     BinaryFile outputFile = BinaryFile::Create(outputPath, error);
-    outputFile.write(renderedView.c_str(), renderedView.size());
+    outputFile.write(renderedView.c_str(), renderedView.size(), error);
     outputFile.close();
 
     ISHIKO_TEST_FAIL_IF_OUTPUT_AND_REFERENCE_FILES_NEQ("MustacheTemplateEngineProfileTests_RenderTest7.html");
@@ -229,7 +229,7 @@ void MustacheTemplateEngineProfileTests::RenderTest8(Test& test)
         test.context().getOutputPath("MustacheTemplateEngineProfileTests_RenderTest8.html");
     Error error; // TODO: use exception
     BinaryFile outputFile = BinaryFile::Create(outputPath, error);
-    outputFile.write(renderedView.c_str(), renderedView.size());
+    outputFile.write(renderedView.c_str(), renderedView.size(), error);
     outputFile.close();
 
     ISHIKO_TEST_FAIL_IF_OUTPUT_AND_REFERENCE_FILES_NEQ("MustacheTemplateEngineProfileTests_RenderTest8.html");
@@ -254,7 +254,7 @@ void MustacheTemplateEngineProfileTests::RenderWithLayoutTest1(Test& test)
         test.context().getOutputPath("MustacheTemplateEngineProfileTests_RenderWithLayoutTest1.html");
     Error error; // TODO: use exception
     BinaryFile outputFile = BinaryFile::Create(outputPath, error);
-    outputFile.write(renderedView.c_str(), renderedView.size());
+    outputFile.write(renderedView.c_str(), renderedView.size(), error);
     outputFile.close();
 
     ISHIKO_TEST_FAIL_IF_OUTPUT_AND_REFERENCE_FILES_NEQ("MustacheTemplateEngineProfileTests_RenderWithLayoutTest1.html");
@@ -279,7 +279,7 @@ void MustacheTemplateEngineProfileTests::RenderWithLayoutTest2(Test& test)
         test.context().getOutputPath("MustacheTemplateEngineProfileTests_RenderWithLayoutTest2.html");
     Error error; // TODO: use exception
     BinaryFile outputFile = BinaryFile::Create(outputPath, error);
-    outputFile.write(renderedView.c_str(), renderedView.size());
+    outputFile.write(renderedView.c_str(), renderedView.size(), error);
     outputFile.close();
 
     ISHIKO_TEST_FAIL_IF_OUTPUT_AND_REFERENCE_FILES_NEQ("MustacheTemplateEngineProfileTests_RenderWithLayoutTest2.html");
