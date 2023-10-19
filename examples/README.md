@@ -1,7 +1,7 @@
-# Nemu Mustache Template Engine Examples
+# Nemu/C++ Mustache Template Engine - Examples
 
-A series of examples showing how to use {{ mustache  }} templates with the Nemu Web Framework.
+A series of examples showing how to use [{{ mustache }}](https://mustache.github.io/) templates with the Nemu Web Framework.
 
-# Contents
+## Contents
 
-- [MustacheTemplates](mustache-templates): an example that shows how to serve pages generated from {{mustache}} templates.
+- [MustacheTemplates](mustache-templates): an example that shows how to serve pages generated from {{ mustache }} templates.
