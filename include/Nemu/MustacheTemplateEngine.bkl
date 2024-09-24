@@ -1,13 +1,13 @@
-ishikopath = envvar("ISHIKO_CPP");
+ishikopath = envvar("ISHIKO_CPP_ROOT");
 import $(ishikopath)/process/include/Ishiko/Process.bkl;
 import $(ishikopath)/third-party-glue/include/Ishiko/ThirdParty/mstch.bkl;
-nemupath = envvar("NEMU_CPP");
+nemupath = envvar("NEMU_CPP_ROOT");
 import $(nemupath)/web-framework/include/Nemu/WebFramework.bkl;
 
 setting NEMU_CPP_MUSTACHETEMPLATEENGINE_ROOT
 {
     help = "Path to the Nemu installation";
-    default = '$(NEMU_CPP)/mustache-template-engine';
+    default = '$(NEMU_CPP_ROOT)/mustache-template-engine';
 }
 
 template NemuMustacheTemplateEngine : NemuWebFramework, IshikoProcess, mstch
