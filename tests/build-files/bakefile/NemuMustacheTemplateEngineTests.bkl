@@ -3,14 +3,13 @@ import $(ishikopath)/test-framework/include/Ishiko/TestFramework.bkl;
 nemupath = envvar("NEMU_CPP_ROOT");
 import $(nemupath)/mustache-template-engine/include/Nemu/MustacheTemplateEngine.bkl;
 
-toolsets = gnu vs2022 vs2019 vs2017 vs2015 vs2013;
+toolsets = gnu vs2022 vs2019 vs2017 vs2015;
 
 gnu.makefile = ../gnumake/GNUmakefile;
 vs2022.solutionfile = ../vc17/NemuMustacheTemplateEngineTests.sln;
 vs2019.solutionfile = ../vc16/NemuMustacheTemplateEngineTests.sln;
 vs2017.solutionfile = ../vc15/NemuMustacheTemplateEngineTests.sln;
 vs2015.solutionfile = ../vc14/NemuMustacheTemplateEngineTests.sln;
-vs2013.solutionfile = ../vc12/NemuMustacheTemplateEngineTests.sln;
 
 program NemuMustacheTemplateEngineTests : NemuMustacheTemplateEngine, IshikoTestFramework
 {

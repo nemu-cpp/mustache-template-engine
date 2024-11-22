@@ -4,14 +4,13 @@ import $(ishikopath)/third-party-glue/include/Ishiko/ThirdParty/mstch.bkl;
 nemupath = envvar("NEMU_CPP_ROOT");
 import $(nemupath)/web-framework/include/Nemu/WebFramework.bkl;
 
-toolsets = gnu vs2022 vs2019 vs2017 vs2015 vs2013;
+toolsets = gnu vs2022 vs2019 vs2017 vs2015;
 
 gnu.makefile = ../gnumake/GNUmakefile;
 vs2022.solutionfile = ../vc17/NemuMustacheTemplateEngine.sln;
 vs2019.solutionfile = ../vc16/NemuMustacheTemplateEngine.sln;
 vs2017.solutionfile = ../vc15/NemuMustacheTemplateEngine.sln;
 vs2015.solutionfile = ../vc14/NemuMustacheTemplateEngine.sln;
-vs2013.solutionfile = ../vc12/NemuMustacheTemplateEngine.sln;
 
 library NemuMustacheTemplateEngine : NemuWebFramework, IshikoProcess, mstch
 {
